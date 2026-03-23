@@ -2,78 +2,93 @@
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
-<DocsLayout title="Installation" description="Set up lean-ctx for Cursor, GitHub Copilot, Claude Code, and Windsurf.">
+<DocsLayout title="Installation" description="Install lean-ctx and configure it for Cursor, GitHub Copilot, Claude Code, and Windsurf.">
   <p>
-    lean-ctx works with any MCP-compatible editor. Below are setup instructions for each supported tool.
+    lean-ctx is a single Rust binary with zero runtime dependencies. It works as both a transparent
+    shell hook and an MCP server for any compatible editor.
   </p>
 
-  <h2>1. Build lean-ctx</h2>
+  <h2>Install</h2>
+  <p>Via cargo:</p>
+  <pre><code>cargo install lean-ctx</code></pre>
+
+  <p>Or download a prebuilt binary from <a href="https://gitlab.pounce.ch/root/lean-ctx/-/releases">GitLab Releases</a>.</p>
+
+  <p>Or build from source:</p>
   <pre><code>git clone https://gitlab.pounce.ch/root/lean-ctx
-cd lean-ctx
-npm install
-npm run build</code></pre>
+cd lean-ctx/rust
+cargo build --release
+# Binary at: target/release/lean-ctx</code></pre>
 
-  <p>Note the absolute path to the <code>dist/index.js</code> file — you'll need it for the editor configuration.</p>
+  <h2>MCP Server Setup</h2>
 
-  <h2>Cursor</h2>
-  <p>Add to your global MCP config at <code>~/.cursor/mcp.json</code>:</p>
-
+  <h3>Cursor</h3>
+  <p>Add to <code>~/.cursor/mcp.json</code>:</p>
   <pre><code>{`{
   "mcpServers": {
     "lean-ctx": {
-      "command": "node",
-      "args": ["/absolute/path/to/lean-ctx/dist/index.js"],
-      "env": {
-        "LEAN_CTX_ROOT": "/path/to/your/project"
-      }
+      "command": "lean-ctx"
     }
   }
 }`}</code></pre>
 
-  <p>
-    The <code>LEAN_CTX_ROOT</code> environment variable tells lean-ctx which project directory to
-    use for relative file paths and the project tree.
-  </p>
-
-  <h3>Optional: Cursor Rule</h3>
-  <p>
-    Run <code>lean-ctx init</code> in your project to create a Cursor rule that instructs the AI
-    to prefer lean-ctx tools over built-in tools:
-  </p>
-  <pre><code>npx lean-ctx init /path/to/your/project</code></pre>
-
-  <h2>GitHub Copilot</h2>
-  <p>Add a <code>.vscode/mcp.json</code> file to your project root:</p>
-
+  <h3>GitHub Copilot</h3>
+  <p>Add <code>.github/copilot/mcp.json</code> to your project:</p>
   <pre><code>{`{
   "servers": {
     "lean-ctx": {
-      "command": "node",
-      "args": ["/absolute/path/to/lean-ctx/dist/index.js"],
-      "env": {
-        "LEAN_CTX_ROOT": "\${workspaceFolder}"
-      }
+      "command": "lean-ctx"
     }
   }
 }`}</code></pre>
 
-  <p>Copilot reads <code>.vscode/mcp.json</code> automatically when opening the workspace.</p>
+  <h3>Claude Code</h3>
+  <pre><code>claude mcp add lean-ctx lean-ctx</code></pre>
 
-  <h2>Claude Code</h2>
-  <p>Register lean-ctx as an MCP server via the Claude Code CLI:</p>
-  <pre><code>claude mcp add lean-ctx node /absolute/path/to/lean-ctx/dist/index.js</code></pre>
+  <h3>Windsurf</h3>
+  <p>Add to <code>~/.codeium/windsurf/mcp_config.json</code>:</p>
+  <pre><code>{`{
+  "mcpServers": {
+    "lean-ctx": {
+      "command": "lean-ctx"
+    }
+  }
+}`}</code></pre>
 
+  <h2>Shell Hook Setup</h2>
   <p>
-    Set the project root before starting a session:
+    The shell hook compresses CLI output transparently, without requiring the LLM to use MCP tools.
+    Both approaches can be used simultaneously.
   </p>
-  <pre><code>export LEAN_CTX_ROOT="/path/to/your/project"
-claude</code></pre>
 
-  <h2>Windsurf</h2>
+  <h3>Shell Aliases</h3>
+  <p>Add to your <code>.zshrc</code> or <code>.bashrc</code>:</p>
+  <pre><code>alias git='lean-ctx -c git'
+alias npm='lean-ctx -c npm'
+alias cargo='lean-ctx -c cargo'
+alias docker='lean-ctx -c docker'</code></pre>
+
+  <h3>Cursor Terminal Profile</h3>
+  <p>Add a lean-ctx terminal profile in VS Code / Cursor settings:</p>
+  <pre><code>{`{
+  "terminal.integrated.profiles.osx": {
+    "lean-ctx": {
+      "path": "/path/to/lean-ctx",
+      "args": ["--shell"],
+      "icon": "terminal"
+    }
+  }
+}`}</code></pre>
+
+  <h3>Interactive Shell</h3>
+  <p>Run lean-ctx as a shell wrapper:</p>
+  <pre><code>lean-ctx --shell</code></pre>
+
+  <h2>Cursor Rule (Optional)</h2>
   <p>
-    Windsurf supports MCP servers through its settings. Add lean-ctx in the MCP configuration
-    section with the same <code>command</code>, <code>args</code>, and <code>env</code> as shown
-    for Cursor above.
+    For maximum token savings, add a Cursor rule to your project. Copy the example from
+    <code>examples/lean-ctx.mdc</code> to <code>.cursor/rules/lean-ctx.mdc</code> in your project.
+    This instructs the LLM to prefer lean-ctx tools and use compact output.
   </p>
 
   <h2>Verify Installation</h2>
@@ -81,20 +96,9 @@ claude</code></pre>
   <ol>
     <li>Restart the editor completely</li>
     <li>Open a project file</li>
-    <li>Check that <code>ctx_read</code>, <code>ctx_tree</code>, <code>ctx_shell</code>, <code>ctx_benchmark</code>, and <code>ctx_metrics</code> appear in the available MCP tools</li>
+    <li>Check that 8 tools appear: <code>ctx_read</code>, <code>ctx_tree</code>, <code>ctx_shell</code>,
+        <code>ctx_search</code>, <code>ctx_compress</code>, <code>ctx_benchmark</code>,
+        <code>ctx_metrics</code>, <code>ctx_analyze</code></li>
     <li>Run <code>ctx_benchmark</code> on a file to verify token counting works</li>
   </ol>
-
-  <h2>Automatic Setup</h2>
-  <p>
-    The <code>lean-ctx init</code> command can set up everything for you:
-  </p>
-  <pre><code>node /path/to/lean-ctx/dist/cli.js init /your/project</code></pre>
-
-  <p>This creates:</p>
-  <ul>
-    <li><code>lean-ctx.config.json</code> — project-specific configuration</li>
-    <li><code>.vscode/mcp.json</code> — Copilot + Cursor MCP config</li>
-    <li><code>.cursor/rules/lean-ctx.mdc</code> — Cursor rule to prefer lean-ctx tools</li>
-  </ul>
 </DocsLayout>

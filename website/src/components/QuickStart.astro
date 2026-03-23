@@ -7,8 +7,7 @@ const editorConfigs = [
     code: `{
   "mcpServers": {
     "lean-ctx": {
-      "command": "node",
-      "args": ["/path/to/lean-ctx/dist/index.js"]
+      "command": "lean-ctx"
     }
   }
 }`,
@@ -16,12 +15,11 @@ const editorConfigs = [
   {
     id: 'copilot',
     label: 'GitHub Copilot',
-    file: '.github/copilot-mcp.json',
+    file: '.github/copilot/mcp.json',
     code: `{
-  "mcpServers": {
+  "servers": {
     "lean-ctx": {
-      "command": "node",
-      "args": ["/path/to/lean-ctx/dist/index.js"]
+      "command": "lean-ctx"
     }
   }
 }`,
@@ -29,15 +27,8 @@ const editorConfigs = [
   {
     id: 'claude',
     label: 'Claude Code',
-    file: '~/.claude/mcp.json',
-    code: `{
-  "mcpServers": {
-    "lean-ctx": {
-      "command": "node",
-      "args": ["/path/to/lean-ctx/dist/index.js"]
-    }
-  }
-}`,
+    file: 'Terminal',
+    code: `claude mcp add lean-ctx lean-ctx`,
   },
   {
     id: 'windsurf',
@@ -46,8 +37,7 @@ const editorConfigs = [
     code: `{
   "mcpServers": {
     "lean-ctx": {
-      "command": "node",
-      "args": ["/path/to/lean-ctx/dist/index.js"]
+      "command": "lean-ctx"
     }
   }
 }`,
@@ -74,11 +64,10 @@ const editorConfigs = [
         <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent/20 to-accent-2/10 border border-accent/20 flex items-center justify-center text-sm font-bold gradient-text">1</span>
         <div>
           <p class="text-sm font-bold text-text-bright">Clone & Build</p>
-          <p class="text-xs text-muted/50">One-liner for any system with Node.js</p>
+          <p class="text-xs text-muted/50">Single Rust binary, zero dependencies</p>
         </div>
       </div>
-      <pre class="p-5 text-xs font-mono text-muted leading-relaxed overflow-x-auto"><code>git clone https://gitlab.pounce.ch/root/lean-ctx.git
-cd lean-ctx && npm install && npm run build</code></pre>
+      <pre class="p-5 text-xs font-mono text-muted leading-relaxed overflow-x-auto"><code>cargo install lean-ctx</code></pre>
     </div>
 
     <!-- Step 2: Configure Editor (with tabs) -->
@@ -124,10 +113,10 @@ cd lean-ctx && npm install && npm run build</code></pre>
       </div>
       <pre class="p-5 text-xs font-mono text-muted leading-relaxed overflow-x-auto"><code>$ ctx_metrics
 
-lean-ctx session
-files: 12 tracked, 34 reads, 22 hits (65%)
-tokens: 28,450 original → 4,120 sent
-saved: -24,330 tokens (85%)</code></pre>
+lean-ctx session metrics
+Files tracked: 12 | Reads: 34 | Cache hits: 22 (65%)
+Input tokens: 28.5K → 4.1K sent | 24.3K saved (85%)
+Cost estimate: $0.427 → $0.062 | $0.365 saved</code></pre>
     </div>
 
     <div class="text-center">

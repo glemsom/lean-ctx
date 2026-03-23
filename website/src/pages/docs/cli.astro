@@ -2,38 +2,43 @@
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
-<DocsLayout title="CLI Reference" description="lean-ctx command-line interface for dashboard, stats, and project initialization.">
+<DocsLayout title="CLI Reference" description="lean-ctx command-line interface for MCP server, shell hook, and interactive mode.">
   <p>
-    The lean-ctx CLI provides commands for managing the dashboard, viewing stats, and initializing
-    projects.
+    lean-ctx is a single Rust binary that operates in multiple modes depending on the command-line flags.
   </p>
 
   <h2>Usage</h2>
-  <pre><code>lean-ctx &lt;command&gt; [options]</code></pre>
+  <pre><code>lean-ctx [command] [options]</code></pre>
 
-  <h2>Commands</h2>
+  <h2>Modes</h2>
 
-  <h3>dashboard</h3>
-  <p>Start the web dashboard server.</p>
-  <pre><code>lean-ctx dashboard</code></pre>
-  <p>Opens at <code>http://localhost:3333</code>. Set <code>LEAN_CTX_PORT</code> to change the port.</p>
+  <h3>MCP Server (default)</h3>
+  <p>Starts the MCP server via stdio. This is the mode used by editors like Cursor, Claude Code, Copilot, and Windsurf.</p>
+  <pre><code>lean-ctx</code></pre>
 
-  <h3>stats</h3>
-  <p>Display token savings statistics in the terminal.</p>
-  <pre><code>lean-ctx stats</code></pre>
-  <p>Shows total sessions, tool calls, tokens saved, and the 5 most recent sessions.</p>
+  <h3>Shell Hook</h3>
+  <p>Execute a command and compress the output before printing:</p>
+  <pre><code>lean-ctx -c git status
+lean-ctx exec cargo build</code></pre>
+  <p>Ideal for shell aliases:</p>
+  <pre><code>alias git='lean-ctx -c git'
+alias cargo='lean-ctx -c cargo'</code></pre>
 
-  <h3>init [path]</h3>
-  <p>Initialize lean-ctx for a project directory.</p>
-  <pre><code>lean-ctx init /path/to/project</code></pre>
-  <p>Creates the following files (only if they don't exist):</p>
-  <ul>
-    <li><code>lean-ctx.config.json</code> — project configuration</li>
-    <li><code>.vscode/mcp.json</code> — MCP config for Copilot and Cursor</li>
-    <li><code>.cursor/rules/lean-ctx.mdc</code> — Cursor rule to prefer lean-ctx tools</li>
-  </ul>
+  <h3>Interactive Shell</h3>
+  <p>Launch a shell wrapper that compresses all command output:</p>
+  <pre><code>lean-ctx --shell
+lean-ctx shell</code></pre>
+  <p>This starts a <code>lean-ctx></code> REPL that passes commands to the system shell and compresses output.</p>
 
-  <h3>help</h3>
-  <p>Show available commands.</p>
-  <pre><code>lean-ctx help</code></pre>
+  <h3>Version</h3>
+  <pre><code>lean-ctx --version</code></pre>
+
+  <h3>Help</h3>
+  <pre><code>lean-ctx --help</code></pre>
+
+  <h2>Exit Codes</h2>
+  <p>
+    In shell hook mode (<code>-c</code>), lean-ctx forwards the exit code of the wrapped command.
+    This ensures scripts and CI pipelines work correctly.
+  </p>
 </DocsLayout>
