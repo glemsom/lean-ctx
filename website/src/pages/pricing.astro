@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const tiers = [
+  {
+    name: 'Free',
+    price: '$0',
+    period: 'forever',
+    description: 'Everything you need to save tokens locally.',
+    features: [
+      '5 MCP Tools (ctx_read, ctx_tree, ctx_shell, ctx_benchmark, ctx_metrics)',
+      'Session caching with MD5 hashing',
+      'All compression modes (signatures, diff, aggressive)',
+      'Local dashboard with charts',
+      'CLI (dashboard, stats, init)',
+      'Cursor, Copilot, Claude Code, Windsurf support',
+      'Persistent stats in ~/.lean-ctx/',
+      'Unlimited projects',
+      'MIT licensed — fully open source',
+    ],
+    cta: 'Get Started',
+    ctaHref: '/docs/getting-started',
+    highlight: false,
+  },
+  {
+    name: 'Pro',
+    price: '$9',
+    period: '/month',
+    description: 'Cloud dashboard and team features for power users.',
+    features: [
+      'Everything in Free, plus:',
+      'Cloud Dashboard — access stats from anywhere',
+      'Cross-device sync of token savings',
+      'Team analytics — aggregate stats across members',
+      'Historical data retention (unlimited)',
+      'Priority support',
+      'Early access to new features',
+    ],
+    cta: 'Join Waitlist',
+    ctaHref: '#waitlist',
+    highlight: true,
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    period: '',
+    description: 'Self-hosted deployment with custom integrations.',
+    features: [
+      'Everything in Pro, plus:',
+      'Self-hosted cloud dashboard',
+      'Custom compression patterns',
+      'SSO / SAML authentication',
+      'Admin controls and audit logs',
+      'Dedicated support and SLA',
+      'Custom onboarding',
+    ],
+    cta: 'Contact Us',
+    ctaHref: 'mailto:hello@lean-ctx.dev',
+    highlight: false,
+  },
+];
+---
+
+<BaseLayout title="Pricing — lean-ctx" description="lean-ctx is free and open source. Pro plans add cloud dashboard, team analytics, and cross-device sync.">
+  <div class="max-w-7xl mx-auto px-6 py-20">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl font-extrabold tracking-tight mb-4">Simple Pricing</h1>
+      <p class="text-lg text-muted max-w-2xl mx-auto">
+        The core tool is free and open source. Forever. Pro features add cloud capabilities for teams.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      {tiers.map(tier => (
+        <div class:list={[
+          'rounded-xl border p-8 flex flex-col',
+          tier.highlight
+            ? 'border-accent bg-accent/5 relative'
+            : 'border-border bg-surface'
+        ]}>
+          {tier.highlight && (
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-accent text-bg text-xs font-bold">
+              Coming Soon
+            </div>
+          )}
+
+          <div class="mb-6">
+            <h3 class="text-lg font-bold mb-2">{tier.name}</h3>
+            <div class="flex items-baseline gap-1">
+              <span class:list={['text-4xl font-extrabold', tier.highlight ? 'text-accent' : 'text-text']}>
+                {tier.price}
+              </span>
+              {tier.period && <span class="text-sm text-muted">{tier.period}</span>}
+            </div>
+            <p class="mt-2 text-sm text-muted">{tier.description}</p>
+          </div>
+
+          <ul class="space-y-3 mb-8 flex-1">
+            {tier.features.map(f => (
+              <li class="flex items-start gap-2 text-sm">
+                <svg class:list={['w-4 h-4 mt-0.5 flex-shrink-0', tier.highlight ? 'text-accent' : 'text-accent/60']} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span class="text-muted">{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={tier.ctaHref}
+            class:list={[
+              'block text-center py-3 px-6 rounded-lg text-sm font-semibold transition-all',
+              tier.highlight
+                ? 'bg-accent text-bg hover:bg-accent/90 shadow-lg shadow-accent/20'
+                : 'border border-border text-text hover:border-accent/40'
+            ]}
+          >
+            {tier.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- Waitlist Section -->
+    <section id="waitlist" class="mt-24 max-w-xl mx-auto text-center scroll-mt-24">
+      <h2 class="text-2xl font-bold mb-4">Join the Pro Waitlist</h2>
+      <p class="text-muted mb-8">
+        Be the first to know when the cloud dashboard launches. No spam, just one email when it's ready.
+      </p>
+      <form class="flex gap-3" action="https://formspree.io/f/your-form-id" method="POST">
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="you@company.com"
+          class="flex-1 px-4 py-3 rounded-lg bg-surface border border-border text-text placeholder-muted text-sm focus:outline-none focus:border-accent transition-colors"
+        />
+        <button type="submit" class="px-6 py-3 rounded-lg bg-accent text-bg text-sm font-semibold hover:bg-accent/90 transition-colors">
+          Notify Me
+        </button>
+      </form>
+    </section>
+  </div>
+</BaseLayout>

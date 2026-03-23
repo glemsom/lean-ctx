@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const tools = [
+  {
+    id: 'ctx_read',
+    name: 'ctx_read',
+    tagline: 'Smart File Read with 4 Modes',
+    savings: '89-99%',
+    description: 'The most powerful tool in lean-ctx. Session-aware caching means files are only sent once. Subsequent reads return a 13-token cache hit instead of the full content.',
+    modes: [
+      { name: 'full', desc: 'Default mode. Reads the file and caches it. Re-reads return a compact cache-hit message.', savings: '~99% on re-reads' },
+      { name: 'signatures', desc: 'Extracts only function signatures, interfaces, types, and exports. Perfect for dependency files where only the API surface matters.', savings: '83-96%' },
+      { name: 'diff', desc: 'Returns only the lines that changed since the last read. Ideal for monitoring file changes during development.', savings: '70-95%' },
+      { name: 'aggressive', desc: 'Full content with syntax stripping: reduced indentation, removed obvious type annotations, collapsed simple blocks.', savings: '20-40%' },
+    ],
+    example: {
+      input: 'ctx_read auth.ts --mode signatures',
+      output: `F1 [123L +]
+fn generateToken():s
+fn async createUser(email:s, password:s, name:s, locale:s)
+fn async verifyEmail(token:s)
+fn async authenticateUser(email:s, password:s)
+fn async createSession(userId:n) -> string
+fn async validateSession(token:s)
+fn async destroySession(token:s)
+[794 tok saved (87%)]`,
+    },
+  },
+  {
+    id: 'ctx_tree',
+    name: 'ctx_tree',
+    tagline: 'Compact Project Structure',
+    savings: '40%',
+    description: 'Generates token-efficient directory listings using simple indentation instead of Unicode box-drawing characters. Includes file counts per directory for instant project orientation.',
+    modes: [],
+    example: {
+      input: 'ctx_tree --depth 2',
+      output: `src/ (45)
+  core/ (8)
+  tools/ (5)
+  dashboard/ (2)
+  patterns/ (5)
+package.json
+README.md
+[64 tok saved (34%)]`,
+    },
+  },
+  {
+    id: 'ctx_shell',
+    name: 'ctx_shell',
+    tagline: 'CLI Output Compression',
+    savings: '60-90%',
+    description: 'Pattern-based compression for common developer tools. Recognizes npm, git, docker, and TypeScript compiler output and strips noise while preserving actionable information.',
+    modes: [],
+    example: {
+      input: 'ctx_shell "npm install express"',
+      output: `+express@4.18.2 (3 deps, 847ms)
+[82 tok saved (71%)]`,
+    },
+  },
+  {
+    id: 'ctx_benchmark',
+    name: 'ctx_benchmark',
+    tagline: 'Exact Token Measurements',
+    savings: 'Data-driven',
+    description: 'Run benchmarks on any file to see exact tiktoken counts for every compression strategy. Compare raw, full, aggressive, signatures, and cache-hit side by side.',
+    modes: [],
+    example: {
+      input: 'ctx_benchmark auth.ts',
+      output: `Benchmark: auth.ts (123L)
+
+Strategy             Tokens  Savings
+──────────────────────────────────────
+raw                     915  —
+aggressive              946  —
+signatures (compact)    121  -794 (87%)
+cache hit                13  -902 (99%)
+──────────────────────────────────────
+Best: "cache hit" saves 902 tokens (99%)`,
+    },
+  },
+  {
+    id: 'ctx_metrics',
+    name: 'ctx_metrics',
+    tagline: 'Real-time Session Statistics',
+    savings: 'Monitoring',
+    description: 'View session statistics with tiktoken-measured token counts. Tracks cache hit rates, per-tool savings, and file references using compact protocol.',
+    modes: [],
+    example: {
+      input: 'ctx_metrics',
+      output: `lean-ctx session
+files: 12 tracked, 34 reads, 22 hits (65%)
+tokens: 28,450 original -> 4,120 sent (-24,330 saved, 85%)
+refs: F1=auth.ts F2=db.ts F3=routes.ts ...`,
+    },
+  },
+];
+---
+
+<BaseLayout title="Features — lean-ctx" description="5 MCP tools that reduce LLM token consumption by 89-99%. Smart caching, signature extraction, diff-based updates, and CLI compression.">
+  <div class="max-w-7xl mx-auto px-6 py-20">
+    <div class="text-center mb-20">
+      <h1 class="text-4xl font-extrabold tracking-tight mb-4">Every Tool, Explained</h1>
+      <p class="text-lg text-muted max-w-2xl mx-auto">
+        5 MCP tools working together to minimize tokens while preserving the context your AI coding tool needs.
+      </p>
+    </div>
+
+    <div class="space-y-24">
+      {tools.map((tool, i) => (
+        <section id={tool.id} class="scroll-mt-24">
+          <div class:list={['grid lg:grid-cols-2 gap-12 items-start', i % 2 === 1 && 'lg:grid-flow-dense']}>
+            <div class:list={[i % 2 === 1 && 'lg:col-start-2']}>
+              <div class="inline-flex items-center gap-2 px-3 py-1 mb-4 rounded-full bg-accent-glow text-xs font-semibold text-accent">
+                {tool.savings} savings
+              </div>
+              <h2 class="text-2xl font-bold mb-2 font-mono">{tool.name}</h2>
+              <p class="text-lg text-accent-2 mb-4">{tool.tagline}</p>
+              <p class="text-muted leading-relaxed mb-6">{tool.description}</p>
+
+              {tool.modes.length > 0 && (
+                <div class="space-y-3">
+                  <h3 class="text-sm font-semibold uppercase tracking-wider text-muted">Modes</h3>
+                  {tool.modes.map(mode => (
+                    <div class="rounded-lg border border-border bg-surface p-4">
+                      <div class="flex items-center justify-between mb-1">
+                        <span class="text-sm font-mono font-semibold text-text">{mode.name}</span>
+                        <span class="text-xs text-accent font-medium">{mode.savings}</span>
+                      </div>
+                      <p class="text-xs text-muted">{mode.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class:list={['rounded-xl border border-border bg-surface overflow-hidden', i % 2 === 1 && 'lg:col-start-1']}>
+              <div class="flex items-center gap-2 px-4 py-3 border-b border-border bg-surface-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-danger/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#fbbf24]/60"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-accent/60"></span>
+                <span class="ml-2 text-xs text-muted font-mono">{tool.name}</span>
+              </div>
+              <div class="p-5 font-mono text-sm leading-relaxed">
+                <p class="text-muted">$ {tool.example.input}</p>
+                <pre class="mt-3 text-text whitespace-pre-wrap">{tool.example.output}</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

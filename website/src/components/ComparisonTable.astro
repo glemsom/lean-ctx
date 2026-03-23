@@ -1,0 +1,51 @@
+---
+const rows = [
+  { feature: 'Token Savings', leanctx: '89-99%', rtk: '60-90% CLI only', orbital: '20-25%' },
+  { feature: 'Scope', leanctx: 'Files + CLI + Search', rtk: 'Shell output', orbital: 'Chat panel' },
+  { feature: 'Session Caching', leanctx: 'MD5-based', rtk: 'None', orbital: 'None' },
+  { feature: 'Signature Mode', leanctx: 'TypeScript / JS / Svelte', rtk: 'None', orbital: 'None' },
+  { feature: 'Diff Mode', leanctx: 'Line-level diffs', rtk: 'None', orbital: 'None' },
+  { feature: 'Dashboard', leanctx: 'Charts + History', rtk: 'None', orbital: 'Basic' },
+  { feature: 'Token Counting', leanctx: 'tiktoken (exact)', rtk: 'Estimated', orbital: 'None' },
+  { feature: 'MCP Native', leanctx: 'Yes', rtk: 'No (shell hook)', orbital: 'Yes' },
+  { feature: 'Multi-Editor', leanctx: 'Cursor, Copilot, Claude, Windsurf', rtk: 'Cursor only', orbital: 'Cursor only' },
+  { feature: 'Open Source', leanctx: 'Yes (MIT)', rtk: 'Yes', orbital: 'No' },
+];
+---
+
+<section class="py-24 border-t border-border">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold mb-4">How We Compare</h2>
+      <p class="text-muted text-lg max-w-2xl mx-auto">
+        lean-ctx goes beyond CLI compression. Session caching, signature extraction, and
+        diff-based updates deliver savings no other tool can match.
+      </p>
+    </div>
+
+    <div class="rounded-xl border border-border bg-surface overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-border">
+              <th class="text-left text-xs uppercase tracking-wider text-muted font-medium py-4 px-6">Feature</th>
+              <th class="text-left text-xs uppercase tracking-wider font-medium py-4 px-6 text-accent bg-accent-glow">lean-ctx</th>
+              <th class="text-left text-xs uppercase tracking-wider text-muted font-medium py-4 px-6">RTK</th>
+              <th class="text-left text-xs uppercase tracking-wider text-muted font-medium py-4 px-6">OrbitalMCP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(row => (
+              <tr class="border-b border-border last:border-b-0">
+                <td class="py-3 px-6 text-sm font-medium text-text">{row.feature}</td>
+                <td class="py-3 px-6 text-sm font-semibold text-accent bg-accent-glow/30">{row.leanctx}</td>
+                <td class="py-3 px-6 text-sm text-muted">{row.rtk}</td>
+                <td class="py-3 px-6 text-sm text-muted">{row.orbital}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

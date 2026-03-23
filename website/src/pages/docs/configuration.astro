@@ -1,0 +1,81 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Configuration" description="Customize lean-ctx behavior with lean-ctx.config.json.">
+  <p>
+    lean-ctx can be configured per-project using a <code>lean-ctx.config.json</code> file in the
+    project root. All settings are optional — lean-ctx works with sensible defaults out of the box.
+  </p>
+
+  <h2>Configuration File</h2>
+  <pre><code>{`{
+  "ignore": [
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    ".svelte-kit",
+    "__pycache__",
+    ".next"
+  ],
+  "compress": {
+    "removeEmptyLines": true,
+    "removeRedundantComments": true,
+    "maxFileLines": 500
+  },
+  "patterns": {
+    "npm": true,
+    "git": true,
+    "docker": true,
+    "typescript": true
+  }
+}`}</code></pre>
+
+  <h2>Options</h2>
+
+  <h3>ignore</h3>
+  <p>
+    Array of directory and file names to exclude from <code>ctx_tree</code> and file operations.
+    These are matched against path segments, not glob patterns.
+  </p>
+
+  <h3>compress</h3>
+  <table>
+    <thead>
+      <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>removeEmptyLines</code></td><td><code>true</code></td><td>Strip empty lines from file reads</td></tr>
+      <tr><td><code>removeRedundantComments</code></td><td><code>true</code></td><td>Strip obvious comments (e.g. "// Import the module")</td></tr>
+      <tr><td><code>maxFileLines</code></td><td><code>500</code></td><td>Truncate files beyond this limit with a summary</td></tr>
+    </tbody>
+  </table>
+
+  <h3>patterns</h3>
+  <p>
+    Enable or disable specific shell output compression patterns. Set to <code>false</code> to
+    disable compression for a specific tool's output.
+  </p>
+
+  <h2>Environment Variables</h2>
+  <table>
+    <thead>
+      <tr><th>Variable</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>LEAN_CTX_ROOT</code></td><td>Project root directory (set in editor MCP config)</td></tr>
+      <tr><td><code>LEAN_CTX_PORT</code></td><td>Dashboard port (default: 3333)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Creating the Config</h2>
+  <p>
+    The easiest way to create the config file is with the CLI:
+  </p>
+  <pre><code>lean-ctx init /path/to/project</code></pre>
+  <p>
+    This creates <code>lean-ctx.config.json</code> with sensible defaults, plus the editor config
+    files for Cursor and Copilot.
+  </p>
+</DocsLayout>

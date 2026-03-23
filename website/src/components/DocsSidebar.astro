@@ -1,0 +1,59 @@
+---
+const sections = [
+  {
+    title: 'Getting Started',
+    items: [
+      { label: 'Introduction', href: '/docs/getting-started' },
+      { label: 'Installation', href: '/docs/installation' },
+      { label: 'Quick Start', href: '/docs/quick-start' },
+    ],
+  },
+  {
+    title: 'Tools',
+    items: [
+      { label: 'ctx_read', href: '/docs/tools' },
+      { label: 'ctx_tree', href: '/docs/tools-tree' },
+      { label: 'ctx_shell', href: '/docs/tools-shell' },
+      { label: 'ctx_benchmark', href: '/docs/tools-benchmark' },
+      { label: 'ctx_metrics', href: '/docs/tools-metrics' },
+    ],
+  },
+  {
+    title: 'Reference',
+    items: [
+      { label: 'Configuration', href: '/docs/configuration' },
+      { label: 'Dashboard', href: '/docs/dashboard' },
+      { label: 'CLI', href: '/docs/cli' },
+    ],
+  },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<aside class="hidden lg:block">
+  <nav class="sticky top-24 space-y-6">
+    {sections.map(section => (
+      <div>
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-muted mb-2">{section.title}</h4>
+        <ul class="space-y-1">
+          {section.items.map(item => (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'block text-sm py-1 px-3 rounded-md transition-colors',
+                  currentPath === item.href
+                    ? 'text-accent bg-accent-glow font-medium'
+                    : 'text-muted hover:text-text hover:bg-surface'
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </nav>
+</aside>

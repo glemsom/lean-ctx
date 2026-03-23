@@ -1,0 +1,73 @@
+<section class="py-24 border-t border-border">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold mb-4">The Token Problem</h2>
+      <p class="text-muted text-lg max-w-2xl mx-auto">
+        AI coding tools send your entire codebase to the LLM on every interaction.
+        That's thousands of tokens wasted on files already in context.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      <div class="rounded-xl border border-danger/20 bg-danger/5 p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-danger/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-danger">Without lean-ctx</h3>
+        </div>
+        <ul class="space-y-3 text-sm text-muted">
+          <li class="flex items-start gap-2">
+            <span class="text-danger mt-0.5">&#9679;</span>
+            <span>Reading same file twice: <strong class="text-text">3,517 tokens</strong></span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-danger mt-0.5">&#9679;</span>
+            <span>Checking dependency API surface: <strong class="text-text">2,536 tokens</strong></span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-danger mt-0.5">&#9679;</span>
+            <span>git status output: <strong class="text-text">100+ characters</strong></span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-danger mt-0.5">&#9679;</span>
+            <span>Project structure: <strong class="text-text">980 tokens</strong></span>
+          </li>
+        </ul>
+        <p class="mt-4 text-sm font-semibold text-danger">~7,000 tokens per typical interaction</p>
+      </div>
+
+      <div class="rounded-xl border border-accent/20 bg-accent/5 p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-accent">With lean-ctx</h3>
+        </div>
+        <ul class="space-y-3 text-sm text-muted">
+          <li class="flex items-start gap-2">
+            <span class="text-accent mt-0.5">&#9679;</span>
+            <span>Reading same file twice: <strong class="text-accent">13 tokens</strong> (cached)</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-accent mt-0.5">&#9679;</span>
+            <span>Checking dependency API surface: <strong class="text-accent">252 tokens</strong> (signatures)</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-accent mt-0.5">&#9679;</span>
+            <span>git status output: <strong class="text-accent">31 characters</strong> (compressed)</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-accent mt-0.5">&#9679;</span>
+            <span>Project structure: <strong class="text-accent">588 tokens</strong> (compact)</span>
+          </li>
+        </ul>
+        <p class="mt-4 text-sm font-semibold text-accent">~884 tokens — 87% reduction</p>
+      </div>
+    </div>
+  </div>
+</section>

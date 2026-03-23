@@ -1,0 +1,88 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="ctx_read — Smart File Read" description="Read files with session caching, signature extraction, diff mode, and aggressive compression.">
+  <p>
+    <code>ctx_read</code> is the most impactful tool in lean-ctx. It replaces your editor's built-in
+    file read with an intelligent, session-aware reader that caches content, extracts signatures,
+    and computes diffs.
+  </p>
+
+  <h2>Parameters</h2>
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>path</code></td><td>string</td><td>Yes</td><td>Absolute or relative file path</td></tr>
+      <tr><td><code>mode</code></td><td>string</td><td>No</td><td><code>full</code> (default), <code>signatures</code>, <code>diff</code>, <code>aggressive</code></td></tr>
+      <tr><td><code>query</code></td><td>string</td><td>No</td><td>Relevance filter — only return matching sections</td></tr>
+      <tr><td><code>force</code></td><td>boolean</td><td>No</td><td>Force re-read even if cached (default: false)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Mode: full (default)</h2>
+  <p>
+    Reads the entire file and stores it in the session cache with an MD5 hash. On subsequent reads
+    of the same file, returns a compact cache-hit message instead of the full content.
+  </p>
+  <pre><code># First read: returns full content (915 tokens)
+ctx_read auth.ts
+
+# Second read: returns cache hit (13 tokens)
+ctx_read auth.ts
+→ "F1 [cached 0t 123L ∅]"</code></pre>
+  <p>Savings: <strong>~99%</strong> on re-reads.</p>
+
+  <h2>Mode: signatures</h2>
+  <p>
+    Extracts only function signatures, interface definitions, type aliases, and class declarations.
+    Uses the compact protocol with type abbreviations (<code>:s</code> for string, <code>:n</code> for number,
+    <code>⊛</code> for async).
+  </p>
+  <pre><code>ctx_read auth.ts --mode signatures
+→ F1 [123L +]
+  fn generateToken():s
+  fn ⊛ createUser(email:s, password:s, name:s, locale:s)
+  fn ⊛ verifyEmail(token:s)
+  fn ⊛ authenticateUser(email:s, password:s)
+  fn ⊛ createSession(userId:n) →⊛ string
+  [794 tok saved (87%)]</code></pre>
+  <p>
+    Best for: dependency files, utility modules, API surfaces where you need to know
+    <em>what functions exist</em> without reading implementation details.
+  </p>
+
+  <h2>Mode: diff</h2>
+  <p>
+    If the file was previously cached and has changed, returns only the changed lines.
+    Uses line-level diffing to show additions and removals.
+  </p>
+  <pre><code>ctx_read auth.ts --mode diff
+→ Δ auth.ts (3 changes)
+  L42: - const TOKEN_EXPIRY = 3600;
+  L42: + const TOKEN_EXPIRY = 7200;
+  [saved 890 tokens (97%)]</code></pre>
+  <p>
+    Best for: monitoring changes during iterative development, reviewing modifications.
+  </p>
+
+  <h2>Mode: aggressive</h2>
+  <p>
+    Returns full file content with syntax stripping: reduced indentation (2→1 space),
+    stripped obvious type annotations, collapsed simple blocks, and removed empty lines.
+  </p>
+  <p>Savings: <strong>20-40%</strong> extra compression on top of caching.</p>
+
+  <h2>Compact Protocol</h2>
+  <p>All <code>ctx_read</code> responses use lean-ctx's compact protocol:</p>
+  <ul>
+    <li><code>F1</code>, <code>F2</code>, ... — file reference IDs for the session</li>
+    <li><code>∅</code> — unchanged since last read</li>
+    <li><code>Δ</code> — file has changed</li>
+    <li><code>⊛</code> — async function</li>
+    <li><code>:s</code>, <code>:n</code>, <code>:b</code> — type abbreviations (string, number, boolean)</li>
+    <li><code>fn</code>, <code>cl</code>, <code>if</code>, <code>tp</code> — keyword abbreviations</li>
+  </ul>
+</DocsLayout>

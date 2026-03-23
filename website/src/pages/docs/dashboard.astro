@@ -1,0 +1,55 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Dashboard" description="Visual token savings dashboard with charts and session history.">
+  <p>
+    lean-ctx includes a local web dashboard that visualizes your token savings over time.
+    It runs as a lightweight HTTP server on <code>localhost:3333</code>.
+  </p>
+
+  <h2>Starting the Dashboard</h2>
+  <pre><code>lean-ctx dashboard
+# or
+node /path/to/lean-ctx/dist/cli.js dashboard</code></pre>
+  <p>Opens at <a href="http://localhost:3333">http://localhost:3333</a>.</p>
+
+  <h2>What You See</h2>
+
+  <h3>KPI Cards</h3>
+  <ul>
+    <li><strong>Tokens Saved:</strong> Total tokens saved across all sessions</li>
+    <li><strong>Avg Reduction:</strong> Average percentage reduction per session</li>
+    <li><strong>Sessions:</strong> Number of completed sessions</li>
+    <li><strong>Tool Calls:</strong> Total number of lean-ctx tool invocations</li>
+  </ul>
+
+  <h3>Charts</h3>
+  <ul>
+    <li><strong>Token Savings Over Time:</strong> Bar chart showing original vs. saved tokens per session</li>
+    <li><strong>By Tool:</strong> Doughnut chart breaking down savings by tool (ctx_read, ctx_tree, ctx_shell)</li>
+  </ul>
+
+  <h3>Session Table</h3>
+  <p>
+    Lists the 20 most recent sessions with date, project name, tool call count, tokens saved,
+    and saving rate.
+  </p>
+
+  <h2>Data Storage</h2>
+  <p>
+    All session data is stored in <code>~/.lean-ctx/stats.json</code>. The file is automatically
+    created and updated when lean-ctx sessions end. Up to 500 sessions are retained.
+  </p>
+
+  <h2>API Endpoint</h2>
+  <p>
+    The dashboard exposes a JSON API at <code>GET /api/stats</code> that returns the full
+    stats store. This can be used for custom integrations or monitoring.
+  </p>
+  <pre><code>curl http://localhost:3333/api/stats | jq '.totalTokensSaved'</code></pre>
+
+  <h2>Custom Port</h2>
+  <p>Set the <code>LEAN_CTX_PORT</code> environment variable to change the dashboard port:</p>
+  <pre><code>LEAN_CTX_PORT=4444 lean-ctx dashboard</code></pre>
+</DocsLayout>

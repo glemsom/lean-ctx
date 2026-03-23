@@ -1,0 +1,35 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="ctx_metrics — Session Statistics" description="Real-time token savings with tiktoken-measured counts and file references.">
+  <p>
+    <code>ctx_metrics</code> displays real-time session statistics including total token savings,
+    cache hit rates, and file reference mappings.
+  </p>
+
+  <h2>Parameters</h2>
+  <p>No parameters. Returns current session statistics.</p>
+
+  <h2>Example Output</h2>
+  <pre><code>ctx_metrics
+
+lean-ctx session
+files: 12 tracked, 34 reads, 22 hits (65%)
+tokens: 28,450 original → 4,120 sent (−24,330 saved, 85%)
+refs: F1=auth.ts F2=db.ts F3=routes.ts F4=config.ts</code></pre>
+
+  <h2>Understanding the Output</h2>
+  <ul>
+    <li><strong>files:</strong> Number of unique files tracked, total reads, and cache hits with hit rate</li>
+    <li><strong>tokens:</strong> Original token count (what would have been sent without lean-ctx), actual tokens sent, and the savings in absolute and percentage terms</li>
+    <li><strong>refs:</strong> File reference map — shows which <code>F1</code>, <code>F2</code>, etc. labels correspond to which files</li>
+  </ul>
+
+  <h2>Persistence</h2>
+  <p>
+    Session data is automatically saved to <code>~/.lean-ctx/stats.json</code> when the MCP server
+    exits. Historical data can be viewed in the <a href="/docs/dashboard">Dashboard</a> or via the
+    <a href="/docs/cli">CLI</a>.
+  </p>
+</DocsLayout>

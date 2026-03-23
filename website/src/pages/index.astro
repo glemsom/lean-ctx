@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ProblemSolution from '../components/ProblemSolution.astro';
+import FeatureCards from '../components/FeatureCards.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import QuickStart from '../components/QuickStart.astro';
+---
+
+<BaseLayout title="lean-ctx — Save 89-99% of your LLM tokens">
+  <Hero />
+  <ProblemSolution />
+  <FeatureCards />
+  <ComparisonTable />
+  <QuickStart />
+
+  <!-- CTA Section -->
+  <section class="py-24 border-t border-border">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-4">Stop Wasting Tokens</h2>
+      <p class="text-muted text-lg mb-8 max-w-xl mx-auto">
+        Every token saved is money saved. lean-ctx works silently in the background,
+        optimizing every interaction with your AI coding tool.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/docs/getting-started" class="inline-flex items-center px-8 py-3.5 text-sm font-semibold rounded-lg bg-accent text-bg hover:bg-accent/90 transition-all shadow-lg shadow-accent/20">
+          Get Started — It's Free
+        </a>
+        <a href="/pricing" class="inline-flex items-center px-8 py-3.5 text-sm font-medium rounded-lg border border-border text-text hover:border-accent/40 transition-all">
+          View Pricing
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

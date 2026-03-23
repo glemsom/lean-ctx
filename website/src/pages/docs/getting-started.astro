@@ -1,0 +1,92 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Getting Started" description="Get started with lean-ctx in under 5 minutes.">
+  <p>
+    lean-ctx is an MCP (Model Context Protocol) server that sits between your AI coding tool and
+    the LLM. It caches file reads, compresses CLI output, and extracts signatures to reduce token
+    consumption by 89-99%.
+  </p>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li>Node.js 20 or higher</li>
+    <li>An MCP-compatible editor: Cursor, GitHub Copilot, Claude Code, or Windsurf</li>
+  </ul>
+
+  <h2>How It Works</h2>
+  <p>
+    lean-ctx registers 5 MCP tools that your editor can call instead of (or in addition to)
+    its built-in file read, shell, and search tools. Each tool applies domain-specific optimizations:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Replaces</th>
+        <th>Savings</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>ctx_read</code></td>
+        <td>File reads (Read tool)</td>
+        <td>89-99%</td>
+      </tr>
+      <tr>
+        <td><code>ctx_tree</code></td>
+        <td>Directory listings (ls, find, Glob)</td>
+        <td>~40%</td>
+      </tr>
+      <tr>
+        <td><code>ctx_shell</code></td>
+        <td>Shell commands (Shell tool)</td>
+        <td>60-90%</td>
+      </tr>
+      <tr>
+        <td><code>ctx_benchmark</code></td>
+        <td>—</td>
+        <td>Measurement tool</td>
+      </tr>
+      <tr>
+        <td><code>ctx_metrics</code></td>
+        <td>—</td>
+        <td>Session statistics</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Quick Install</h2>
+
+  <pre><code>git clone https://gitlab.pounce.ch/root/lean-ctx
+cd lean-ctx
+npm install
+npm run build</code></pre>
+
+  <p>
+    After building, you need to configure your editor to use the lean-ctx MCP server.
+    See the <a href="/docs/installation">Installation guide</a> for editor-specific instructions.
+  </p>
+
+  <h2>Verify It Works</h2>
+  <p>
+    Once configured, restart your editor and look for lean-ctx in the MCP tools list.
+    You should see 5 tools: <code>ctx_read</code>, <code>ctx_tree</code>, <code>ctx_shell</code>,
+    <code>ctx_benchmark</code>, and <code>ctx_metrics</code>.
+  </p>
+
+  <p>
+    Run <code>ctx_benchmark</code> on any file in your project to see the exact token savings
+    for each compression strategy.
+  </p>
+
+  <h2>Next Steps</h2>
+  <ul>
+    <li><a href="/docs/installation">Editor-specific installation guides</a></li>
+    <li><a href="/docs/tools">Tool reference — ctx_read modes</a></li>
+    <li><a href="/docs/configuration">Configuration options</a></li>
+    <li><a href="/docs/dashboard">Dashboard guide</a></li>
+  </ul>
+</DocsLayout>

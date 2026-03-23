@@ -1,0 +1,52 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="ctx_shell — CLI Compression" description="Pattern-based compression for npm, git, docker, and TypeScript output.">
+  <p>
+    <code>ctx_shell</code> executes shell commands and applies pattern-based compression to the output.
+    It recognizes common developer tools and strips verbose boilerplate while preserving actionable information.
+  </p>
+
+  <h2>Parameters</h2>
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>command</code></td><td>string</td><td>Yes</td><td>Shell command to execute</td></tr>
+      <tr><td><code>cwd</code></td><td>string</td><td>No</td><td>Working directory (default: project root)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Supported Patterns</h2>
+
+  <h3>npm</h3>
+  <p>Compresses <code>npm install</code>, <code>npm run</code>, <code>npm audit</code> output. Removes progress bars, funding notices, and verbose dependency trees.</p>
+  <pre><code>ctx_shell "npm install express"
+→ +express@4.18.2 (3 deps, 847ms)
+  [82 tok saved (71%)]</code></pre>
+
+  <h3>git</h3>
+  <p>Compresses <code>git status</code>, <code>git log</code>, <code>git diff</code> output. Summarizes changes into compact notation.</p>
+  <pre><code>ctx_shell "git status"
+→ M2 +1 ?3
+  [45 tok saved (68%)]</code></pre>
+
+  <h3>docker</h3>
+  <p>Compresses <code>docker build</code>, <code>docker ps</code>, <code>docker logs</code> output.</p>
+
+  <h3>TypeScript Compiler</h3>
+  <p>Compresses <code>tsc</code> error output. Groups errors by file, removes redundant type paths.</p>
+  <pre><code>ctx_shell "npx tsc --noEmit"
+→ 3 errors in 2 files:
+  auth.ts:42 TS2345 type mismatch
+  db.ts:15 TS2304 name not found
+  db.ts:28 TS2304 name not found</code></pre>
+
+  <h2>Fallback</h2>
+  <p>
+    For unrecognized commands, <code>ctx_shell</code> applies generic compression: removes empty lines,
+    strips ANSI codes, and truncates very long output with a summary.
+  </p>
+</DocsLayout>

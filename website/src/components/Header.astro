@@ -1,0 +1,80 @@
+---
+const navItems = [
+  { label: 'Features', href: '/features' },
+  { label: 'Docs', href: '/docs/getting-started' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Blog', href: '/blog' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 border-b border-border bg-bg/80 backdrop-blur-xl">
+  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-2 group">
+      <span class="text-xl font-bold tracking-tight text-text">lean</span>
+      <span class="text-xl font-light text-accent">-ctx</span>
+    </a>
+
+    <div class="hidden md:flex items-center gap-8">
+      {navItems.map(item => (
+        <a
+          href={item.href}
+          class:list={[
+            'text-sm transition-colors',
+            currentPath.startsWith(item.href) ? 'text-accent font-medium' : 'text-muted hover:text-text'
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-4">
+      <a
+        href="https://gitlab.pounce.ch/root/lean-ctx"
+        target="_blank"
+        rel="noopener"
+        class="text-muted hover:text-text transition-colors"
+        aria-label="GitLab"
+      >
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.4058.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4702l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4702.8748.8748 0 0 0-.9997-.0539.8604.8604 0 0 0-.3362.4058L.4332 9.5015l-.0337.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.008.0287.0216 4.9587 3.7116 2.4559 1.86 1.4947 1.1312a1.0085 1.0085 0 0 0 1.2187 0l1.4947-1.1312 2.4559-1.86 4.9874-3.7332.0126-.0102a6.0682 6.0682 0 0 0 2.0094-7.003z"/>
+        </svg>
+      </a>
+      <a
+        href="/docs/getting-started"
+        class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg bg-accent text-bg hover:bg-accent/90 transition-colors"
+      >
+        Get Started
+      </a>
+    </div>
+
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden text-muted hover:text-text"
+      aria-label="Menu"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" class="hidden md:hidden border-t border-border bg-bg px-6 py-4">
+    {navItems.map(item => (
+      <a href={item.href} class="block py-2 text-sm text-muted hover:text-text transition-colors">
+        {item.label}
+      </a>
+    ))}
+    <a href="/docs/getting-started" class="block mt-3 text-center py-2 text-sm font-medium rounded-lg bg-accent text-bg">
+      Get Started
+    </a>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

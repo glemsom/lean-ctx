@@ -1,0 +1,39 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="CLI Reference" description="lean-ctx command-line interface for dashboard, stats, and project initialization.">
+  <p>
+    The lean-ctx CLI provides commands for managing the dashboard, viewing stats, and initializing
+    projects.
+  </p>
+
+  <h2>Usage</h2>
+  <pre><code>lean-ctx &lt;command&gt; [options]</code></pre>
+
+  <h2>Commands</h2>
+
+  <h3>dashboard</h3>
+  <p>Start the web dashboard server.</p>
+  <pre><code>lean-ctx dashboard</code></pre>
+  <p>Opens at <code>http://localhost:3333</code>. Set <code>LEAN_CTX_PORT</code> to change the port.</p>
+
+  <h3>stats</h3>
+  <p>Display token savings statistics in the terminal.</p>
+  <pre><code>lean-ctx stats</code></pre>
+  <p>Shows total sessions, tool calls, tokens saved, and the 5 most recent sessions.</p>
+
+  <h3>init [path]</h3>
+  <p>Initialize lean-ctx for a project directory.</p>
+  <pre><code>lean-ctx init /path/to/project</code></pre>
+  <p>Creates the following files (only if they don't exist):</p>
+  <ul>
+    <li><code>lean-ctx.config.json</code> — project configuration</li>
+    <li><code>.vscode/mcp.json</code> — MCP config for Copilot and Cursor</li>
+    <li><code>.cursor/rules/lean-ctx.mdc</code> — Cursor rule to prefer lean-ctx tools</li>
+  </ul>
+
+  <h3>help</h3>
+  <p>Show available commands.</p>
+  <pre><code>lean-ctx help</code></pre>
+</DocsLayout>

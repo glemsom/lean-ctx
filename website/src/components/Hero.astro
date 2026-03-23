@@ -1,0 +1,59 @@
+<section class="relative overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-accent-glow/50 to-transparent pointer-events-none"></div>
+  <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-6 pt-24 pb-20 text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 mb-8 rounded-full border border-border bg-surface text-xs text-muted">
+      <span class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+      v0.3.0 — Open Source MCP Server
+    </div>
+
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6 max-w-3xl mx-auto">
+      Save <span class="text-accent">89-99%</span> of your
+      <br />LLM tokens
+    </h1>
+
+    <p class="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+      lean-ctx is an MCP server that caches, compresses, and optimizes every token
+      sent to your AI coding tool. Works with Cursor, GitHub Copilot, Claude Code, and Windsurf.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+      <a href="/docs/getting-started" class="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg bg-accent text-bg hover:bg-accent/90 transition-all shadow-lg shadow-accent/20 hover:shadow-accent/30">
+        Get Started
+        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+      <a href="https://gitlab.pounce.ch/root/lean-ctx" target="_blank" rel="noopener" class="inline-flex items-center px-6 py-3 text-sm font-medium rounded-lg border border-border text-text hover:border-accent hover:text-accent transition-all">
+        View Source
+        <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.4058.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4702l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4702.8748.8748 0 0 0-.9997-.0539.8604.8604 0 0 0-.3362.4058L.4332 9.5015l-.0337.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.008.0287.0216 4.9587 3.7116 2.4559 1.86 1.4947 1.1312a1.0085 1.0085 0 0 0 1.2187 0l1.4947-1.1312 2.4559-1.86 4.9874-3.7332.0126-.0102a6.0682 6.0682 0 0 0 2.0094-7.003z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Terminal Demo -->
+    <div class="max-w-2xl mx-auto">
+      <div class="rounded-xl border border-border bg-surface overflow-hidden shadow-2xl shadow-black/40">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-border bg-surface-2">
+          <span class="w-3 h-3 rounded-full bg-danger/60"></span>
+          <span class="w-3 h-3 rounded-full bg-[#fbbf24]/60"></span>
+          <span class="w-3 h-3 rounded-full bg-accent/60"></span>
+          <span class="ml-2 text-xs text-muted font-mono">lean-ctx benchmark</span>
+        </div>
+        <div class="p-5 text-left font-mono text-sm leading-relaxed">
+          <p class="text-muted">$ ctx_benchmark auth.ts</p>
+          <p class="mt-3 text-text">Benchmark: auth.ts (123 lines)</p>
+          <p class="mt-2 text-muted">Strategy             Tokens  Savings</p>
+          <p class="text-muted">──────────────────────────────────────</p>
+          <p><span class="text-text">raw                     </span><span class="text-muted">915  —</span></p>
+          <p><span class="text-text">signatures (compact)    </span><span class="text-accent">121  -794 (87%)</span></p>
+          <p><span class="text-text font-bold">cache hit                </span><span class="text-accent font-bold"> 13  -902 (99%)</span></p>
+          <p class="text-muted">──────────────────────────────────────</p>
+          <p class="mt-1">Best: <span class="text-accent">"cache hit"</span> saves <span class="text-accent font-bold">902 tokens (99%)</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

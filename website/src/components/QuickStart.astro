@@ -1,0 +1,65 @@
+---
+const steps = [
+  {
+    num: '01',
+    title: 'Clone & Build',
+    code: `git clone https://gitlab.pounce.ch/root/lean-ctx
+cd lean-ctx && npm install && npm run build`,
+  },
+  {
+    num: '02',
+    title: 'Configure Your Editor',
+    code: `// ~/.cursor/mcp.json
+{
+  "mcpServers": {
+    "lean-ctx": {
+      "command": "node",
+      "args": ["/path/to/lean-ctx/dist/index.js"],
+      "env": { "LEAN_CTX_ROOT": "/your/project" }
+    }
+  }
+}`,
+  },
+  {
+    num: '03',
+    title: 'Start Saving Tokens',
+    code: `// lean-ctx tools are now available in your editor
+// ctx_read, ctx_tree, ctx_shell, ctx_benchmark, ctx_metrics
+
+// Open the dashboard to see your savings:
+$ lean-ctx dashboard`,
+  },
+];
+---
+
+<section class="py-24 border-t border-border">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl font-bold mb-4">Up and Running in 3 Steps</h2>
+      <p class="text-muted text-lg max-w-2xl mx-auto">
+        No cloud account needed. No API keys. Just clone, build, and configure.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {steps.map(step => (
+        <div class="rounded-xl border border-border bg-surface overflow-hidden">
+          <div class="flex items-center gap-3 px-6 py-3 border-b border-border bg-surface-2">
+            <span class="text-xs font-bold text-accent font-mono">{step.num}</span>
+            <span class="text-sm font-medium text-text">{step.title}</span>
+          </div>
+          <pre class="p-5 text-sm font-mono text-muted leading-relaxed overflow-x-auto"><code>{step.code}</code></pre>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-10">
+      <a href="/docs/getting-started" class="inline-flex items-center px-6 py-3 text-sm font-semibold rounded-lg bg-accent text-bg hover:bg-accent/90 transition-all">
+        Read Full Guide
+        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

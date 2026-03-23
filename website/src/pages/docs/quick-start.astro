@@ -1,0 +1,52 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Quick Start" description="Start saving tokens in 2 minutes.">
+  <p>
+    This guide gets you from zero to saving tokens in the shortest possible time.
+  </p>
+
+  <h2>Step 1: Clone and Build</h2>
+  <pre><code>git clone https://gitlab.pounce.ch/root/lean-ctx
+cd lean-ctx
+npm install
+npm run build</code></pre>
+
+  <h2>Step 2: Initialize Your Project</h2>
+  <pre><code>node dist/cli.js init /path/to/your/project</code></pre>
+
+  <p>This creates the necessary config files for Cursor, Copilot, and more.</p>
+
+  <h2>Step 3: Configure Your Editor</h2>
+  <p>For Cursor, add to <code>~/.cursor/mcp.json</code>:</p>
+  <pre><code>{`{
+  "mcpServers": {
+    "lean-ctx": {
+      "command": "node",
+      "args": ["${process.cwd()}/dist/index.js"],
+      "env": { "LEAN_CTX_ROOT": "/your/project" }
+    }
+  }
+}`}</code></pre>
+
+  <h2>Step 4: Restart and Verify</h2>
+  <p>Restart your editor. The lean-ctx tools will appear in the MCP tool list.</p>
+
+  <p>Try running a benchmark to verify:</p>
+  <pre><code>ctx_benchmark /path/to/your/project/src/index.ts</code></pre>
+
+  <p>You should see a table comparing raw tokens vs. each compression strategy.</p>
+
+  <h2>Step 5: Monitor Savings</h2>
+  <pre><code>node dist/cli.js dashboard</code></pre>
+
+  <p>
+    Opens the local dashboard at <code>http://localhost:3333</code> where you can see
+    token savings over time, per-tool breakdowns, and session history.
+  </p>
+
+  <p>
+    For detailed setup guides per editor, see <a href="/docs/installation">Installation</a>.
+  </p>
+</DocsLayout>
