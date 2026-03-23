@@ -48,6 +48,14 @@ const features = [
     gradient: 'from-accent-3/20 to-accent-2/10',
     icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"/>`,
   },
+  {
+    title: 'ctx_analyze',
+    subtitle: 'Entropy Analysis',
+    savings: 'Diagnostic',
+    description: 'Information-theoretic analysis using Shannon entropy. Shows which parts of a file carry real information vs. boilerplate.',
+    gradient: 'from-accent/20 to-accent-2/10',
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/>`,
+  },
 ];
 ---
 
@@ -56,7 +64,7 @@ const features = [
 
   <div class="relative max-w-7xl mx-auto px-6">
     <div class="text-center mb-20">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-5">6 MCP Tools. One Goal.</h2>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-5">8 MCP Tools. <span class="gradient-text">One Goal.</span></h2>
       <p class="text-muted text-lg max-w-2xl mx-auto leading-relaxed">
         Every tool minimizes tokens while maximizing context quality.
         Measured with tiktoken, benchmarked on real projects.

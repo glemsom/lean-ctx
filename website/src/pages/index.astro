@@ -1,36 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import ProblemSolution from '../components/ProblemSolution.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
 import FeatureCards from '../components/FeatureCards.astro';
+import EditorCards from '../components/EditorCards.astro';
 import ComparisonTable from '../components/ComparisonTable.astro';
 import QuickStart from '../components/QuickStart.astro';
 ---
 
-<BaseLayout title="lean-ctx — Save 89-99% of your LLM tokens">
+<BaseLayout title="lean-ctx — Your AI agent reads too many tokens. Fix it.">
   <Hero />
-  <ProblemSolution />
+  <BeforeAfter />
   <FeatureCards />
+  <EditorCards />
   <ComparisonTable />
   <QuickStart />
 
-  <!-- CTA Section -->
+  <!-- Final CTA -->
   <section class="relative py-28 overflow-hidden">
     <div class="orb w-[400px] h-[400px] bg-accent/15 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style="animation-delay: -5s;"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-bg via-transparent to-bg pointer-events-none"></div>
-
     <div class="relative max-w-3xl mx-auto px-6 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-5">Stop Wasting Tokens</h2>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-5">Your AI doesn't need to<br /><span class="gradient-text">read all that.</span></h2>
       <p class="text-muted text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-        Every token saved is money saved. lean-ctx works silently in the background,
-        optimizing every interaction with your AI coding tool.
+        Install lean-ctx. Better reasoning, longer sessions, lower costs.
       </p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <a href="/docs/getting-started" class="btn-glossy inline-flex items-center px-10 py-4 text-sm font-bold rounded-xl text-bg">
-          Get Started — It's Free
+          Install lean-ctx
         </a>
         <a href="https://gitlab.pounce.ch/root/lean-ctx" target="_blank" rel="noopener" class="btn-outline-glossy inline-flex items-center px-10 py-4 text-sm font-medium rounded-xl text-text">
-          View Source
+          Star on GitLab
         </a>
       </div>
     </div>

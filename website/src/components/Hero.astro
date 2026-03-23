@@ -1,43 +1,55 @@
 <section class="relative overflow-hidden grid-bg">
-  <!-- Gradient orbs -->
-  <div class="orb w-[500px] h-[500px] bg-accent/20 top-[-100px] left-[10%]" style="animation-delay: 0s;"></div>
-  <div class="orb w-[400px] h-[400px] bg-accent-2/20 top-[50px] right-[5%]" style="animation-delay: -7s;"></div>
-  <div class="orb w-[300px] h-[300px] bg-accent-3/15 bottom-[10%] left-[30%]" style="animation-delay: -13s;"></div>
-
-  <!-- Top gradient fade -->
+  <div class="orb w-[600px] h-[600px] bg-accent/20 top-[-150px] left-[5%]" style="animation-delay: 0s;"></div>
+  <div class="orb w-[500px] h-[500px] bg-accent-2/15 top-[0px] right-[0%]" style="animation-delay: -7s;"></div>
+  <div class="orb w-[350px] h-[350px] bg-accent-3/10 bottom-[5%] left-[40%]" style="animation-delay: -13s;"></div>
   <div class="absolute inset-0 bg-gradient-to-b from-bg via-transparent to-bg pointer-events-none"></div>
 
-  <div class="relative max-w-7xl mx-auto px-6 pt-32 pb-28 text-center">
-    <!-- Badge -->
-    <div class="inline-flex items-center gap-2.5 px-5 py-2 mb-10 rounded-full glass text-xs text-muted">
+  <div class="relative max-w-7xl mx-auto px-6 pt-28 pb-24 text-center">
+    <div class="inline-flex items-center gap-2.5 px-5 py-2 mb-8 rounded-full glass text-xs text-muted">
       <span class="relative flex h-2 w-2">
         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
         <span class="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
       </span>
-      v0.5.0 — Open Source MCP Server
+      Open Source · MIT · TypeScript
     </div>
 
-    <!-- Headline -->
-    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-8 max-w-4xl mx-auto">
-      Save <span class="gradient-text">89–99%</span> of your
-      <br />LLM tokens
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mb-6 max-w-4xl mx-auto">
+      Your AI agent reads<br />
+      <span class="gradient-text">too many tokens.</span><br />
+      Fix it.
     </h1>
 
-    <p class="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-12 leading-relaxed">
-      lean-ctx is an MCP server that caches, compresses, and optimizes every token
-      sent to your AI coding tool. Works with Cursor, GitHub Copilot, Claude Code, and Windsurf.
+    <p class="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
+      lean-ctx compresses file reads, CLI outputs, and project context before they reach the LLM.
+      <strong class="text-text">Better reasoning. Longer sessions. Lower costs.</strong>
     </p>
 
-    <!-- CTA Buttons -->
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+    <!-- Stats Badges -->
+    <div class="flex flex-wrap items-center justify-center gap-6 mb-14">
+      <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl glass">
+        <span class="text-2xl font-extrabold gradient-text-accent">89-99%</span>
+        <span class="text-xs text-muted leading-tight">avg. tokens<br />removed</span>
+      </div>
+      <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl glass">
+        <span class="text-2xl font-extrabold gradient-text">8</span>
+        <span class="text-xs text-muted leading-tight">MCP tools<br />included</span>
+      </div>
+      <div class="flex items-center gap-2.5 px-5 py-3 rounded-xl glass">
+        <span class="text-2xl font-extrabold gradient-text-accent">4</span>
+        <span class="text-xs text-muted leading-tight">editors<br />supported</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
       <a href="/docs/getting-started" class="btn-glossy inline-flex items-center px-8 py-3.5 text-sm font-bold rounded-xl text-bg">
-        Get Started
+        Install lean-ctx
         <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
         </svg>
       </a>
       <a href="https://gitlab.pounce.ch/root/lean-ctx" target="_blank" rel="noopener" class="btn-outline-glossy inline-flex items-center px-8 py-3.5 text-sm font-medium rounded-xl text-text">
-        View Source
+        Star on GitLab
         <svg class="ml-2 w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
           <path d="m23.6004 9.5927-.0337-.0862L20.3.9814a.851.851 0 0 0-.3362-.4058.8748.8748 0 0 0-.9997.0539.8748.8748 0 0 0-.29.4702l-2.2055 6.748H7.5375l-2.2057-6.748a.8573.8573 0 0 0-.29-.4702.8748.8748 0 0 0-.9997-.0539.8604.8604 0 0 0-.3362.4058L.4332 9.5015l-.0337.0862a6.0657 6.0657 0 0 0 2.0119 7.0105l.0113.008.0287.0216 4.9587 3.7116 2.4559 1.86 1.4947 1.1312a1.0085 1.0085 0 0 0 1.2187 0l1.4947-1.1312 2.4559-1.86 4.9874-3.7332.0126-.0102a6.0682 6.0682 0 0 0 2.0094-7.003z"/>
         </svg>
@@ -51,18 +63,17 @@
           <span class="w-3 h-3 rounded-full bg-danger/60"></span>
           <span class="w-3 h-3 rounded-full bg-[#fbbf24]/60"></span>
           <span class="w-3 h-3 rounded-full bg-accent/60"></span>
-          <span class="ml-3 text-xs text-muted/60 font-mono">lean-ctx benchmark</span>
+          <span class="ml-3 text-xs text-muted/60 font-mono">lean-ctx metrics</span>
         </div>
         <div class="p-6 text-left font-mono text-sm leading-relaxed">
-          <p class="text-muted/70">$ ctx_benchmark auth.ts</p>
-          <p class="mt-3 text-text">Benchmark: auth.ts (123 lines)</p>
-          <p class="mt-3 text-muted/50">Strategy             Tokens  Savings</p>
-          <p class="text-muted/30">──────────────────────────────────────</p>
-          <p><span class="text-muted/60">raw                     </span><span class="text-muted/40">915  —</span></p>
-          <p><span class="text-muted/60">signatures (compact)    </span><span class="text-accent/80">121  -794 (87%)</span></p>
-          <p><span class="text-text font-semibold">cache hit                </span><span class="gradient-text-accent font-bold"> 13  -902 (99%)</span></p>
-          <p class="text-muted/30">──────────────────────────────────────</p>
-          <p class="mt-2">Best: <span class="text-accent">"cache hit"</span> saves <span class="gradient-text-accent font-bold">902 tokens (99%)</span></p>
+          <p class="text-muted/70">$ ctx_metrics</p>
+          <p class="mt-3 text-text-bright">lean-ctx session</p>
+          <p class="mt-2 text-muted/60">═══════════════════════════════════════</p>
+          <p class="mt-1"><span class="text-muted/60">files:</span> <span class="text-text">12 tracked, 34 reads, 22 hits (65%)</span></p>
+          <p><span class="text-muted/60">tokens:</span> <span class="text-text">28,450 original</span> <span class="text-muted/40">→</span> <span class="gradient-text-accent font-bold">4,120 sent</span></p>
+          <p><span class="text-muted/60">saved:</span> <span class="gradient-text-accent font-bold">-24,330 tokens (85%)</span></p>
+          <p class="mt-2 text-muted/60">═══════════════════════════════════════</p>
+          <p class="mt-1 text-muted/50">refs: F1=auth.ts F2=db.ts F3=routes.ts ...</p>
         </div>
       </div>
     </div>
