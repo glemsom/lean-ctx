@@ -2,54 +2,77 @@
 import DocsLayout from '../../layouts/DocsLayout.astro';
 ---
 
-<DocsLayout title="Dashboard" description="Visual token savings dashboard with charts and session history.">
+<DocsLayout title="Session Metrics" description="Track token savings and costs with ctx_metrics.">
   <p>
-    lean-ctx includes a local web dashboard that visualizes your token savings over time.
-    It runs as a lightweight HTTP server on <code>localhost:3333</code>.
+    lean-ctx tracks token savings in real-time during each session. Use <code>ctx_metrics</code>
+    to see a comprehensive report of your savings.
   </p>
 
-  <h2>Starting the Dashboard</h2>
-  <pre><code>lean-ctx dashboard
-# or
-node /path/to/lean-ctx/dist/cli.js dashboard</code></pre>
-  <p>Opens at <a href="http://localhost:3333">http://localhost:3333</a>.</p>
+  <h2>Using ctx_metrics</h2>
+  <p>Call <code>ctx_metrics</code> at any point during a session to see current savings:</p>
 
-  <h2>What You See</h2>
+  <pre><code>ctx_metrics
 
-  <h3>KPI Cards</h3>
+lean-ctx session metrics
+══════════════════════════════════════════════════
+Files tracked: 12 | Reads: 34 | Cache hits: 22 (65%)
+Input tokens:  28.5K original → 4.1K sent | 24.3K saved (85.5%)
+Cost estimate: $0.4270 without → $0.0620 with lean-ctx | $0.3650 saved
+
+By Tool:
+Tool           Calls  Original     Saved   Avg%
+──────────────────────────────────────────────────
+ctx_read          18     22.4K    19.2K    91%
+ctx_shell          8      4.8K     3.1K    74%
+ctx_tree           4      1.8K     1.2K    40%
+
+By Mode:
+Mode           Calls     Saved
+──────────────────────────────
+map                6    12.1K
+signatures         4     5.2K
+full               8     1.9K
+
+File Refs:
+  F1=auth.ts [123L 915t reads:5]
+  F2=db.ts [89L 412t reads:3]
+  F3=routes.ts [234L 1856t reads:2]
+
+Projected session savings (incl. thinking): $0.512</code></pre>
+
+  <h2>What's Tracked</h2>
   <ul>
-    <li><strong>Tokens Saved:</strong> Total tokens saved across all sessions</li>
-    <li><strong>Avg Reduction:</strong> Average percentage reduction per session</li>
-    <li><strong>Sessions:</strong> Number of completed sessions</li>
-    <li><strong>Tool Calls:</strong> Total number of lean-ctx tool invocations</li>
+    <li><strong>Files tracked:</strong> Number of unique files cached in the session</li>
+    <li><strong>Cache hits:</strong> Times a file was re-read from cache instead of disk</li>
+    <li><strong>Input tokens:</strong> Original vs. sent token counts (tiktoken-exact, o200k_base)</li>
+    <li><strong>Cost estimate:</strong> USD cost based on current API pricing ($15/M input tokens)</li>
+    <li><strong>By Tool:</strong> Calls, original tokens, saved tokens, and average savings per tool</li>
+    <li><strong>By Mode:</strong> How many calls used each ctx_read mode and how much each saved</li>
+    <li><strong>File Refs:</strong> All tracked files with their reference IDs, sizes, and read counts</li>
+    <li><strong>Projected savings:</strong> Estimated total session savings including thinking token impact</li>
   </ul>
 
-  <h3>Charts</h3>
-  <ul>
-    <li><strong>Token Savings Over Time:</strong> Bar chart showing original vs. saved tokens per session</li>
-    <li><strong>By Tool:</strong> Doughnut chart breaking down savings by tool (ctx_read, ctx_tree, ctx_shell)</li>
-  </ul>
-
-  <h3>Session Table</h3>
+  <h2>Token Counting</h2>
   <p>
-    Lists the 20 most recent sessions with date, project name, tool call count, tokens saved,
-    and saving rate.
+    lean-ctx uses <code>tiktoken-rs</code> with the <code>o200k_base</code> encoding (same as GPT-4o,
+    Claude, and other modern models) for exact token counting. No estimation, no heuristics.
   </p>
 
-  <h2>Data Storage</h2>
+  <h2>Using ctx_benchmark</h2>
   <p>
-    All session data is stored in <code>~/.lean-ctx/stats.json</code>. The file is automatically
-    created and updated when lean-ctx sessions end. Up to 500 sessions are retained.
+    To find the optimal compression mode for a specific file, use <code>ctx_benchmark</code>:
   </p>
+  <pre><code>ctx_benchmark auth.ts
 
-  <h2>API Endpoint</h2>
-  <p>
-    The dashboard exposes a JSON API at <code>GET /api/stats</code> that returns the full
-    stats store. This can be used for custom integrations or monitoring.
-  </p>
-  <pre><code>curl http://localhost:3333/api/stats | jq '.totalTokensSaved'</code></pre>
+Benchmark: auth.ts (123L)
 
-  <h2>Custom Port</h2>
-  <p>Set the <code>LEAN_CTX_PORT</code> environment variable to change the dashboard port:</p>
-  <pre><code>LEAN_CTX_PORT=4444 lean-ctx dashboard</code></pre>
+Strategy             Tokens  Savings
+──────────────────────────────────────
+raw                     915  —
+aggressive              782  -133 (15%)
+signatures              121  -794 (87%)
+entropy                 198  -717 (78%)
+cache hit                13  -902 (99%)
+──────────────────────────────────────
+Best: cache hit (99% savings)</code></pre>
 </DocsLayout>

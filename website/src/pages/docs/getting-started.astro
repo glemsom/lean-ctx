@@ -4,21 +4,29 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 
 <DocsLayout title="Getting Started" description="Get started with lean-ctx in under 5 minutes.">
   <p>
-    lean-ctx is an MCP (Model Context Protocol) server that sits between your AI coding tool and
-    the LLM. It caches file reads, compresses CLI output, and extracts signatures to reduce token
-    consumption by 89-99%.
+    lean-ctx is a hybrid context optimizer — a single Rust binary that works as both a transparent
+    shell hook and an MCP server. It caches file reads, compresses CLI output, extracts dependency
+    maps, and filters low-entropy content to reduce token consumption by 89-99%.
   </p>
 
   <h2>Prerequisites</h2>
   <ul>
-    <li>Node.js 20 or higher</li>
     <li>An MCP-compatible editor: Cursor, GitHub Copilot, Claude Code, or Windsurf</li>
+    <li>Rust toolchain (for <code>cargo install</code>) or download a prebuilt binary</li>
+  </ul>
+
+  <h2>Architecture</h2>
+  <p>lean-ctx has two complementary operating modes in a single binary:</p>
+  <ul>
+    <li><strong>Shell Hook</strong> — Wraps CLI commands and compresses output automatically.
+        Works without LLM cooperation. Supports git, npm, cargo, docker, tsc.</li>
+    <li><strong>MCP Server</strong> — 8 advanced tools for cached reads, dependency maps,
+        entropy analysis, benchmarking, and session metrics. Works with any MCP editor.</li>
   </ul>
 
   <h2>How It Works</h2>
   <p>
-    lean-ctx registers 5 MCP tools that your editor can call instead of (or in addition to)
-    its built-in file read, shell, and search tools. Each tool applies domain-specific optimizations:
+    lean-ctx provides 8 MCP tools that replace or augment your editor's built-in tools:
   </p>
 
   <table>
@@ -32,7 +40,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
     <tbody>
       <tr>
         <td><code>ctx_read</code></td>
-        <td>File reads (Read tool)</td>
+        <td>File reads (6 modes: full, map, signatures, diff, aggressive, entropy)</td>
         <td>89-99%</td>
       </tr>
       <tr>
@@ -42,8 +50,18 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
       </tr>
       <tr>
         <td><code>ctx_shell</code></td>
-        <td>Shell commands (Shell tool)</td>
+        <td>Shell commands</td>
         <td>60-90%</td>
+      </tr>
+      <tr>
+        <td><code>ctx_search</code></td>
+        <td>Code search</td>
+        <td>50-80%</td>
+      </tr>
+      <tr>
+        <td><code>ctx_compress</code></td>
+        <td>Context checkpoint for long conversations</td>
+        <td>90-95%</td>
       </tr>
       <tr>
         <td><code>ctx_benchmark</code></td>
@@ -53,28 +71,30 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
       <tr>
         <td><code>ctx_metrics</code></td>
         <td>—</td>
-        <td>Session statistics</td>
+        <td>Session statistics + USD costs</td>
+      </tr>
+      <tr>
+        <td><code>ctx_analyze</code></td>
+        <td>—</td>
+        <td>Entropy analysis + mode recommendation</td>
       </tr>
     </tbody>
   </table>
 
   <h2>Quick Install</h2>
-
-  <pre><code>git clone https://gitlab.pounce.ch/root/lean-ctx
-cd lean-ctx
-npm install
-npm run build</code></pre>
+  <pre><code>cargo install lean-ctx</code></pre>
 
   <p>
-    After building, you need to configure your editor to use the lean-ctx MCP server.
+    After installing, configure your editor to use the lean-ctx MCP server.
     See the <a href="/docs/installation">Installation guide</a> for editor-specific instructions.
   </p>
 
   <h2>Verify It Works</h2>
   <p>
     Once configured, restart your editor and look for lean-ctx in the MCP tools list.
-    You should see 5 tools: <code>ctx_read</code>, <code>ctx_tree</code>, <code>ctx_shell</code>,
-    <code>ctx_benchmark</code>, and <code>ctx_metrics</code>.
+    You should see 8 tools: <code>ctx_read</code>, <code>ctx_tree</code>, <code>ctx_shell</code>,
+    <code>ctx_search</code>, <code>ctx_compress</code>, <code>ctx_benchmark</code>,
+    <code>ctx_metrics</code>, and <code>ctx_analyze</code>.
   </p>
 
   <p>
@@ -85,8 +105,8 @@ npm run build</code></pre>
   <h2>Next Steps</h2>
   <ul>
     <li><a href="/docs/installation">Editor-specific installation guides</a></li>
-    <li><a href="/docs/tools">Tool reference — ctx_read modes</a></li>
+    <li><a href="/features">Tool reference — all 8 tools with examples</a></li>
     <li><a href="/docs/configuration">Configuration options</a></li>
-    <li><a href="/docs/dashboard">Dashboard guide</a></li>
+    <li><a href="/docs/token-guide">Token optimization guide</a></li>
   </ul>
 </DocsLayout>

@@ -5,27 +5,27 @@ const tools = [
   {
     id: 'ctx_read',
     name: 'ctx_read',
-    tagline: 'Smart File Read with 5 Modes',
+    tagline: 'Smart File Read with 6 Modes',
     savings: '89-99%',
-    description: 'The core tool. Session-aware caching means files are only transmitted once. Re-reads return a 13-token cache hit. Five distinct modes let you choose exactly how much context the LLM receives.',
+    description: 'The core tool. Session-aware caching means files are only transmitted once. Re-reads return a 13-token cache hit. Six distinct modes let you choose exactly how much context the LLM receives — from dependency maps to full content.',
     modes: [
-      { name: 'full', desc: 'Default. Reads the file and caches it. Re-reads return a compact cache-hit message.', savings: '~99% on re-reads' },
-      { name: 'signatures', desc: 'Extracts function signatures, interfaces, types, and exports only. Ideal for dependency files.', savings: '83-96%' },
+      { name: 'full', desc: 'Default. Reads the file with structured headers (deps, exports) and caches it. Re-reads return a compact cache-hit message.', savings: '~99% on re-reads' },
+      { name: 'map', desc: 'Dependency graph + exports + API signatures. Use for context files you won\'t edit. Structured headers show imports/exports at a glance.', savings: '85-95%' },
+      { name: 'signatures', desc: 'Extracts function signatures, interfaces, types, and exports. More detail than map mode. Supports TS/JS, Rust, Python, Go.', savings: '83-96%' },
       { name: 'diff', desc: 'Returns only lines that changed since the last read. Perfect for monitoring edits.', savings: '70-95%' },
       { name: 'aggressive', desc: 'Full content with syntax stripping: reduced indentation, removed redundant type annotations.', savings: '20-40%' },
       { name: 'entropy', desc: 'Shannon entropy filtering removes low-information lines. Jaccard deduplication collapses similar blocks.', savings: '60-85%' },
     ],
     example: {
-      input: 'ctx_read auth.ts --mode signatures',
-      output: `F1 [123L +]
-fn generateToken():s
-fn async createUser(email:s, password:s, name:s, locale:s)
-fn async verifyEmail(token:s)
-fn async authenticateUser(email:s, password:s)
-fn async createSession(userId:n) -> string
-fn async validateSession(token:s)
-fn async destroySession(token:s)
-[794 tok saved (87%)]`,
+      input: 'ctx_read auth.ts --mode map',
+      output: `F1=auth.ts [123L]
+  deps: db, crypto, session
+  exports: createUser, authenticateUser, validateSession
+  API:
+    fn async createUser(email:s, password:s) → User
+    fn async authenticateUser(email:s, password:s) → Session
+    fn async validateSession(token:s) → boolean
+[794 tok saved (93%)]`,
     },
   },
   {
@@ -52,7 +52,7 @@ README.md
     name: 'ctx_shell',
     tagline: 'CLI Output Compression',
     savings: '60-90%',
-    description: 'Pattern-based compression for common developer tools. Recognizes npm, git, docker, and TypeScript compiler output. Strips noise like funding messages, deprecation warnings, and verbose formatting.',
+    description: 'Pattern-based compression for common developer tools. Recognizes git, npm, cargo, docker, and TypeScript compiler output. Also available as a transparent shell hook — compresses output automatically without LLM cooperation.',
     modes: [],
     example: {
       input: 'ctx_shell "git status"',
@@ -109,14 +109,19 @@ Best: "cache hit" saves 902 tokens (99%)`,
     name: 'ctx_metrics',
     tagline: 'Real-time Session Statistics',
     savings: 'Monitoring',
-    description: 'Session-wide statistics with tiktoken-measured token counts. Tracks cache hit rates, per-tool savings, and cumulative totals across all tool invocations.',
+    description: 'Session-wide statistics with tiktoken-measured token counts and USD cost estimates. Tracks cache hit rates, per-tool and per-mode savings, and projected session costs.',
     modes: [],
     example: {
       input: 'ctx_metrics',
-      output: `lean-ctx session
-files: 12 tracked, 34 reads, 22 hits (65%)
-tokens: 28,450 original -> 4,120 sent (-24,330 saved, 85%)
-refs: F1=auth.ts F2=db.ts F3=routes.ts ...`,
+      output: `lean-ctx session metrics
+══════════════════════════════════════════════════
+Files tracked: 12 | Reads: 34 | Cache hits: 22 (65%)
+Input tokens:  28.5K original → 4.1K sent | 24.3K saved (85.5%)
+Cost estimate: $0.4270 without → $0.0620 with lean-ctx | $0.3650 saved
+
+By Tool:
+ctx_read         18    19.2K    91%
+ctx_shell         8     3.1K    74%`,
     },
   },
   {

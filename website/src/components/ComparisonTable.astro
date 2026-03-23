@@ -1,16 +1,19 @@
 ---
 const rows = [
+  { feature: 'Architecture', leanctx: 'Hybrid: Shell Hook + MCP', rtk: 'Shell hook only', orbital: 'Chat panel' },
+  { feature: 'Language', leanctx: 'Rust (single binary)', rtk: 'Rust', orbital: 'TypeScript' },
   { feature: 'Token Savings', leanctx: '89-99%', rtk: '60-90% CLI only', orbital: '20-25%' },
-  { feature: 'Scope', leanctx: 'Files + CLI + Search', rtk: 'Shell output', orbital: 'Chat panel' },
+  { feature: 'Scope', leanctx: 'Files + CLI + Search + Deps', rtk: 'Shell output', orbital: 'Chat panel' },
   { feature: 'Session Caching', leanctx: 'MD5-based', rtk: 'None', orbital: 'None' },
-  { feature: 'Signature Mode', leanctx: 'TS / JS / Svelte', rtk: 'None', orbital: 'None' },
+  { feature: 'Read Modes', leanctx: '6 (full, map, signatures, diff, aggressive, entropy)', rtk: 'None', orbital: 'None' },
+  { feature: 'Dependency Maps', leanctx: 'Import/export extraction (TS/JS/Rust/Python/Go)', rtk: 'None', orbital: 'None' },
   { feature: 'Diff Mode', leanctx: 'Line-level diffs', rtk: 'None', orbital: 'None' },
   { feature: 'Context Compress', leanctx: 'Checkpoint snapshots', rtk: 'None', orbital: 'None' },
-  { feature: 'Dashboard', leanctx: 'Charts + History', rtk: 'None', orbital: 'Basic' },
-  { feature: 'Token Counting', leanctx: 'tiktoken (exact)', rtk: 'Estimated', orbital: 'None' },
-  { feature: 'MCP Native', leanctx: 'Yes', rtk: 'No (shell hook)', orbital: 'Yes' },
-  { feature: 'Multi-Editor', leanctx: 'Cursor, Copilot, Claude, Windsurf', rtk: 'Cursor only', orbital: 'Cursor only' },
-  { feature: 'Open Source', leanctx: 'Yes (MIT)', rtk: 'Yes', orbital: 'No' },
+  { feature: 'Token Counting', leanctx: 'tiktoken-exact (o200k_base)', rtk: 'Estimated', orbital: 'None' },
+  { feature: 'Cost Tracking', leanctx: 'USD estimates per session', rtk: 'None', orbital: 'None' },
+  { feature: 'Thinking Reduction', leanctx: 'CRP v2 (30-60% fewer thinking tokens)', rtk: 'None', orbital: 'None' },
+  { feature: 'Multi-Editor', leanctx: 'Cursor, Copilot, Claude Code, Windsurf + Shell', rtk: 'Claude Code', orbital: 'Cursor only' },
+  { feature: 'Open Source', leanctx: 'Yes (MIT)', rtk: 'Yes (MIT)', orbital: 'No' },
 ];
 ---
 
