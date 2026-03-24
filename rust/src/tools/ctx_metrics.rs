@@ -7,8 +7,17 @@ const COST_PER_1M_INPUT: f64 = 15.0;
 const COST_PER_1M_OUTPUT: f64 = 75.0;
 
 pub fn handle(cache: &SessionCache, tool_calls: &[ToolCallRecord], crp_mode: CrpMode) -> String {
-    let stats = cache.get_stats();
+    let cache_stats = cache.get_stats();
     let refs = cache.file_ref_map();
+
+    let total_original: u64 = tool_calls.iter().map(|c| c.original_tokens as u64).sum();
+    let total_saved: u64 = tool_calls.iter().map(|c| c.saved_tokens as u64).sum();
+    let total_sent = total_original.saturating_sub(total_saved);
+    let pct = if total_original > 0 {
+        total_saved as f64 / total_original as f64 * 100.0
+    } else {
+        0.0
+    };
 
     let mut out = Vec::new();
 
@@ -18,21 +27,19 @@ pub fn handle(cache: &SessionCache, tool_calls: &[ToolCallRecord], crp_mode: Crp
 
         out.push(format!(
             "files:{} reads:{} hits:{} ({:.0}%)",
-            stats.files_tracked, stats.total_reads, stats.cache_hits, stats.hit_rate()
+            cache_stats.files_tracked, cache_stats.total_reads, cache_stats.cache_hits, cache_stats.hit_rate()
         ));
 
-        let saved = stats.tokens_saved();
-        let pct = stats.savings_percent();
         out.push(format!(
             "tok: {}→{} | saved:{} ({:.1}%)",
-            format_tokens(stats.total_original_tokens),
-            format_tokens(stats.total_sent_tokens),
-            format_tokens(saved),
+            format_tokens(total_original),
+            format_tokens(total_sent),
+            format_tokens(total_saved),
             pct
         ));
 
-        let cost_saved = saved as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
-        let cost_without = stats.total_original_tokens as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
+        let cost_saved = total_saved as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
+        let cost_without = total_original as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
         out.push(format!("cost: ${:.4}→${:.4} | -${:.4}", cost_without, cost_without - cost_saved, cost_saved));
     } else {
         out.push("lean-ctx session metrics".to_string());
@@ -40,22 +47,20 @@ pub fn handle(cache: &SessionCache, tool_calls: &[ToolCallRecord], crp_mode: Crp
 
         out.push(format!(
             "Files tracked: {} | Reads: {} | Cache hits: {} ({:.0}%)",
-            stats.files_tracked, stats.total_reads, stats.cache_hits, stats.hit_rate()
+            cache_stats.files_tracked, cache_stats.total_reads, cache_stats.cache_hits, cache_stats.hit_rate()
         ));
 
-        let saved = stats.tokens_saved();
-        let pct = stats.savings_percent();
         out.push(format!(
             "Input tokens:  {} original → {} sent | {} saved ({:.1}%)",
-            format_tokens(stats.total_original_tokens),
-            format_tokens(stats.total_sent_tokens),
-            format_tokens(saved),
+            format_tokens(total_original),
+            format_tokens(total_sent),
+            format_tokens(total_saved),
             pct
         ));
 
-        let cost_saved = saved as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
-        let cost_without = stats.total_original_tokens as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
-        let cost_with = stats.total_sent_tokens as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
+        let cost_saved = total_saved as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
+        let cost_without = total_original as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
+        let cost_with = total_sent as f64 / 1_000_000.0 * COST_PER_1M_INPUT;
         out.push(format!(
             "Cost estimate: ${:.4} without → ${:.4} with lean-ctx | ${:.4} saved",
             cost_without, cost_with, cost_saved
@@ -151,8 +156,7 @@ pub fn handle(cache: &SessionCache, tool_calls: &[ToolCallRecord], crp_mode: Crp
         }
     }
 
-    let saved = stats.tokens_saved();
-    let projected_session = saved as f64 / 1_000_000.0 * (COST_PER_1M_INPUT + COST_PER_1M_OUTPUT * 0.3);
+    let projected_session = total_saved as f64 / 1_000_000.0 * (COST_PER_1M_INPUT + COST_PER_1M_OUTPUT * 0.3);
     if projected_session > 0.001 {
         out.push(String::new());
         if crp_mode.is_tdd() {

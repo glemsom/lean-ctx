@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>lean-ctx — Dashboard</title>
+<title>LeanCTX — Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -91,8 +91,8 @@ tr:hover td{background:var(--surface2)}
 <div class="app">
   <header>
     <div class="logo">
-      <h1>lean<span>-ctx</span></h1>
-      <span class="version">v1.1.1</span>
+      <h1>Lean<span>CTX</span></h1>
+      <span class="version">v1.4.0</span>
     </div>
     <div class="hdr-right">
       <span id="lastUpdate" style="font-size:11px;color:var(--muted)"></span>
@@ -100,7 +100,7 @@ tr:hover td{background:var(--surface2)}
     </div>
   </header>
   <div id="root"><div class="loading">Loading dashboard...</div></div>
-  <div class="footer">lean-ctx — Hybrid Context Optimizer · <a href="https://lean-ctx.pounce.ch" target="_blank">lean-ctx.pounce.ch</a></div>
+  <div class="footer">LeanCTX — Hybrid Context Optimizer · <a href="https://leanctx.com" target="_blank">leanctx.com</a></div>
 </div>
 <script>
 const $=id=>document.getElementById(id);
@@ -142,7 +142,7 @@ async function load(){
     const now=new Date();
     $('lastUpdate').textContent='Updated '+now.toLocaleTimeString('de-CH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   }catch(e){
-    $('root').innerHTML='<div class="empty"><h2>Connection Error</h2><p>Could not reach the dashboard API. Make sure lean-ctx dashboard is running.</p></div>';
+    $('root').innerHTML='<div class="empty"><h2>Connection Error</h2><p>Could not reach the dashboard API. Make sure LeanCTX dashboard is running.</p></div>';
   }
 }
 
@@ -150,7 +150,7 @@ function render(d){
   if(!d.total_commands||d.total_commands===0){
     $('root').innerHTML=`<div class="empty">
       <h2>No data yet</h2>
-      <p>Start using lean-ctx via shell hook (<code>git status</code>, <code>npm install</code>) or MCP tools (<code>ctx_read</code>, <code>ctx_shell</code>) in your editor. Savings will appear here automatically.</p>
+      <p>Start using LeanCTX via shell hook (<code>git status</code>, <code>npm install</code>) or MCP tools (<code>ctx_read</code>, <code>ctx_shell</code>) in your editor. Savings will appear here automatically.</p>
     </div>`;
     return;
   }
