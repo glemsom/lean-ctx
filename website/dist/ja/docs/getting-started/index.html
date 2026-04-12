@@ -435,7 +435,7 @@
       },
       kiro: {
         name: 'AWS Kiro',
-        note: 'Configure via lean-ctx init --agent kiro. Kiro uses ~/.kiro/settings/mcp.json for global config or .kiro/settings/mcp.json per workspace.',
+        note: 'Configure via lean-ctx init --agent kiro. This creates both ~/.kiro/settings/mcp.json (MCP connection) AND .kiro/steering/lean-ctx.md (steering file that makes Kiro prefer lean-ctx tools over native readFile/executeBash).',
         manual: [
           'If auto-setup fails, create ~/.kiro/settings/mcp.json:',
           '{',
@@ -443,7 +443,9 @@
           '    "lean-ctx": { "command": "lean-ctx" }',
           '  }',
           '}',
-          '(Get path from: which lean-ctx)'
+          'Then create .kiro/steering/lean-ctx.md with the steering template from:',
+          'https://github.com/yvgude/lean-ctx (see KIRO_STEERING_TEMPLATE in hooks.rs)',
+          '(The steering file is REQUIRED for Kiro to use lean-ctx tools)'
         ],
         agent: 'kiro',
         restart: 'Restart Kiro.'
@@ -684,13 +686,7 @@ nano ~/.config/opencode/opencode.json</code></pre> </li> <li>Add the MCP server 
       &quot;enabled&quot;: true
     }
   }
-}</code></pre> </li> <li>Restart OpenCode.</li> </ol> <h3 id="editor-openclaw">OpenClaw</h3> <p>OpenClaw supports MCP servers natively. You can add lean-ctx from the settings UI or via CLI.</p> <ol> <li>Open OpenClaw settings and navigate to the MCP servers section.</li> <li>Add a new MCP server with command: lean-ctx</li> <li>Restart OpenClaw to activate.</li> </ol> <p><strong>Tip:</strong> Run <code>lean-ctx init --agent openclaw</code> to install lean-ctx skills for OpenClaw.</p> <h3 id="editor-pi">Pi</h3> <p>Pi has a dedicated lean-ctx plugin (<code>pi-lean-ctx</code>) that integrates automatically.</p> <ol> <li><span>Make sure lean-ctx is installed:</span> <pre><code>cargo install lean-ctx</code></pre> </li> <li><span>Install the Pi plugin:</span> <pre><code>pi install pi-lean-ctx</code></pre> <p>Or use lean-ctx&#39;s built-in command:</p> <pre><code>lean-ctx init --agent pi</code></pre> </li> <li>Restart Pi.</li> <li>Verify: lean-ctx tools should appear in Pi's tool list.</li> </ol> <p><strong>Note:</strong> Pi's smart reads automatically use lean-ctx when the plugin is installed. No additional configuration needed.</p> <h3 id="editor-kiro">AWS Kiro</h3> <p>AWS Kiro supports MCP servers via its settings panel or config file.</p> <ol> <li>Open Kiro and navigate to <strong>Settings → MCP Servers</strong>.</li> <li><span>Run the init command to install agent rules:</span> <pre><code>lean-ctx init --agent kiro</code></pre> </li> <li><span>Alternatively, create or edit the MCP config manually:</span> <pre><code>{
-  &quot;mcpServers&quot;: {
-    &quot;lean-ctx&quot;: {
-      &quot;command&quot;: &quot;lean-ctx&quot;
-    }
-  }
-}</code></pre> </li> <li>Restart Kiro to activate.</li> </ol> <p><strong>Note:</strong> Kiro's MCP support is still evolving. Check Kiro docs for the latest config format.</p> <h3 id="editor-verdent">Verdent</h3> <p>Verdent supports MCP servers via configuration or CLI.</p> <ol> <li>Open Verdent settings or navigate to the MCP section.</li> <li><span>Run the init command:</span> <pre><code>lean-ctx init --agent verdent</code></pre> </li> <li><span>Or manually create the MCP config:</span> <pre><code>{
+}</code></pre> </li> <li>Restart OpenCode.</li> </ol> <h3 id="editor-openclaw">OpenClaw</h3> <p>OpenClaw supports MCP servers natively. You can add lean-ctx from the settings UI or via CLI.</p> <ol> <li>Open OpenClaw settings and navigate to the MCP servers section.</li> <li>Add a new MCP server with command: lean-ctx</li> <li>Restart OpenClaw to activate.</li> </ol> <p><strong>Tip:</strong> Run <code>lean-ctx init --agent openclaw</code> to install lean-ctx skills for OpenClaw.</p> <h3 id="editor-pi">Pi</h3> <p>Pi has a dedicated lean-ctx plugin (<code>pi-lean-ctx</code>) that integrates automatically.</p> <ol> <li><span>Make sure lean-ctx is installed:</span> <pre><code>cargo install lean-ctx</code></pre> </li> <li><span>Install the Pi plugin:</span> <pre><code>pi install pi-lean-ctx</code></pre> <p>Or use lean-ctx&#39;s built-in command:</p> <pre><code>lean-ctx init --agent pi</code></pre> </li> <li>Restart Pi.</li> <li>Verify: lean-ctx tools should appear in Pi's tool list.</li> </ol> <p><strong>Note:</strong> Pi's smart reads automatically use lean-ctx when the plugin is installed. No additional configuration needed.</p> <h3 id="editor-kiro">AWS Kiro</h3> <p>AWS Kiro は MCP 設定<strong>と</strong>ステアリングファイルの両方が必要で、ネイティブの代替ツールの代わりに lean-ctx ツールを使用します。</p> <ol> <li><code>lean-ctx setup</code> を実行します — Kiro が自動検出され、MCP 設定とステアリングファイルの両方が作成されます。</li> <li><span>または専用コマンドを使用します（両方のファイルを作成）：</span> <pre><code>lean-ctx init --agent kiro</code></pre> </li> <li><span>これにより 2 つのファイルが作成されます：</span> <ul> <li><code>~/.kiro/settings/mcp.json</code> — MCP サーバー接続</li> <li><code>.kiro/steering/lean-ctx.md</code> — Kiro に <code>readFile</code> の代わりに <code>mcp_lean_ctx_ctx_read</code> を優先させるステアリングファイル等。</li> </ul> </li> <li>Kiro を再起動して有効化します。</li> </ol> <p><strong>重要：</strong>ステアリングファイル（<code>.kiro/steering/lean-ctx.md</code>）はプロジェクトごとに設定します。これがないと、Kiro はネイティブツールをデフォルトで使用し、読み取りと検索で MCP サーバーを無視します。</p> <h3 id="editor-verdent">Verdent</h3> <p>Verdent supports MCP servers via configuration or CLI.</p> <ol> <li>Open Verdent settings or navigate to the MCP section.</li> <li><span>Run the init command:</span> <pre><code>lean-ctx init --agent verdent</code></pre> </li> <li><span>Or manually create the MCP config:</span> <pre><code>{
   &quot;mcpServers&quot;: {
     &quot;lean-ctx&quot;: {
       &quot;command&quot;: &quot;lean-ctx&quot;

@@ -435,7 +435,7 @@
       },
       kiro: {
         name: 'AWS Kiro',
-        note: 'Configure via lean-ctx init --agent kiro. Kiro uses ~/.kiro/settings/mcp.json for global config or .kiro/settings/mcp.json per workspace.',
+        note: 'Configure via lean-ctx init --agent kiro. This creates both ~/.kiro/settings/mcp.json (MCP connection) AND .kiro/steering/lean-ctx.md (steering file that makes Kiro prefer lean-ctx tools over native readFile/executeBash).',
         manual: [
           'If auto-setup fails, create ~/.kiro/settings/mcp.json:',
           '{',
@@ -443,7 +443,9 @@
           '    "lean-ctx": { "command": "lean-ctx" }',
           '  }',
           '}',
-          '(Get path from: which lean-ctx)'
+          'Then create .kiro/steering/lean-ctx.md with the steering template from:',
+          'https://github.com/yvgude/lean-ctx (see KIRO_STEERING_TEMPLATE in hooks.rs)',
+          '(The steering file is REQUIRED for Kiro to use lean-ctx tools)'
         ],
         agent: 'kiro',
         restart: 'Restart Kiro.'
@@ -684,13 +686,7 @@ nano ~/.config/opencode/opencode.json</code></pre> </li> <li>Füge die MCP-Serve
       &quot;enabled&quot;: true
     }
   }
-}</code></pre> </li> <li>Starte OpenCode neu.</li> </ol> <h3 id="editor-openclaw">OpenClaw</h3> <p>OpenClaw unterstützt MCP-Server nativ. Du kannst lean-ctx über die Einstellungsoberfläche oder per CLI hinzufügen.</p> <ol> <li>Öffne die OpenClaw-Einstellungen und navigiere zum MCP-Server-Bereich.</li> <li>Füge einen neuen MCP-Server mit dem Befehl lean-ctx hinzu</li> <li>Starte OpenClaw neu, um zu aktivieren.</li> </ol> <p><strong>Tipp:</strong> Führe <code>lean-ctx init --agent openclaw</code> aus, um lean-ctx Skills für OpenClaw zu installieren.</p> <h3 id="editor-pi">Pi</h3> <p>Pi hat ein dediziertes lean-ctx Plugin (<code>pi-lean-ctx</code>), das sich automatisch integriert.</p> <ol> <li><span>Stelle sicher, dass lean-ctx installiert ist:</span> <pre><code>cargo install lean-ctx</code></pre> </li> <li><span>Installiere das Pi-Plugin:</span> <pre><code>pi install pi-lean-ctx</code></pre> <p>Oder verwende den eingebauten lean-ctx-Befehl:</p> <pre><code>lean-ctx init --agent pi</code></pre> </li> <li>Starte Pi neu.</li> <li>Überprüfe: lean-ctx-Tools sollten in Pis Tool-Liste erscheinen.</li> </ol> <p><strong>Hinweis:</strong> Pis Smart Reads verwenden automatisch lean-ctx, wenn das Plugin installiert ist. Keine zusätzliche Konfiguration nötig.</p> <h3 id="editor-kiro">AWS Kiro</h3> <p>AWS Kiro unterstützt MCP-Server über das Einstellungspanel oder die Konfigurationsdatei.</p> <ol> <li>Öffne Kiro und navigiere zu <strong>Einstellungen → MCP-Server</strong>.</li> <li><span>Führe den Init-Befehl aus, um Agenten-Regeln zu installieren:</span> <pre><code>lean-ctx init --agent kiro</code></pre> </li> <li><span>Alternativ erstelle oder bearbeite die MCP-Konfiguration manuell:</span> <pre><code>{
-  &quot;mcpServers&quot;: {
-    &quot;lean-ctx&quot;: {
-      &quot;command&quot;: &quot;lean-ctx&quot;
-    }
-  }
-}</code></pre> </li> <li>Starte Kiro neu, um zu aktivieren.</li> </ol> <p><strong>Hinweis:</strong> Kiros MCP-Unterstützung entwickelt sich noch weiter. Prüfe die Kiro-Dokumentation für das neueste Konfigurationsformat.</p> <h3 id="editor-verdent">Verdent</h3> <p>Verdent unterstützt MCP-Server über Konfiguration oder CLI.</p> <ol> <li>Öffne die Verdent-Einstellungen oder navigiere zum MCP-Bereich.</li> <li><span>Führe den Init-Befehl aus:</span> <pre><code>lean-ctx init --agent verdent</code></pre> </li> <li><span>Oder erstelle die MCP-Konfiguration manuell:</span> <pre><code>{
+}</code></pre> </li> <li>Starte OpenCode neu.</li> </ol> <h3 id="editor-openclaw">OpenClaw</h3> <p>OpenClaw unterstützt MCP-Server nativ. Du kannst lean-ctx über die Einstellungsoberfläche oder per CLI hinzufügen.</p> <ol> <li>Öffne die OpenClaw-Einstellungen und navigiere zum MCP-Server-Bereich.</li> <li>Füge einen neuen MCP-Server mit dem Befehl lean-ctx hinzu</li> <li>Starte OpenClaw neu, um zu aktivieren.</li> </ol> <p><strong>Tipp:</strong> Führe <code>lean-ctx init --agent openclaw</code> aus, um lean-ctx Skills für OpenClaw zu installieren.</p> <h3 id="editor-pi">Pi</h3> <p>Pi hat ein dediziertes lean-ctx Plugin (<code>pi-lean-ctx</code>), das sich automatisch integriert.</p> <ol> <li><span>Stelle sicher, dass lean-ctx installiert ist:</span> <pre><code>cargo install lean-ctx</code></pre> </li> <li><span>Installiere das Pi-Plugin:</span> <pre><code>pi install pi-lean-ctx</code></pre> <p>Oder verwende den eingebauten lean-ctx-Befehl:</p> <pre><code>lean-ctx init --agent pi</code></pre> </li> <li>Starte Pi neu.</li> <li>Überprüfe: lean-ctx-Tools sollten in Pis Tool-Liste erscheinen.</li> </ol> <p><strong>Hinweis:</strong> Pis Smart Reads verwenden automatisch lean-ctx, wenn das Plugin installiert ist. Keine zusätzliche Konfiguration nötig.</p> <h3 id="editor-kiro">AWS Kiro</h3> <p>AWS Kiro benötigt sowohl eine MCP-Konfiguration <strong>als auch</strong> eine Steering-Datei, um lean-ctx-Tools anstelle nativer Äquivalente zu verwenden.</p> <ol> <li>Führe <code>lean-ctx setup</code> aus — Kiro wird automatisch erkannt und sowohl MCP-Konfiguration als auch Steering-Datei werden erstellt.</li> <li><span>Oder verwende den dedizierten Befehl (erstellt beide Dateien):</span> <pre><code>lean-ctx init --agent kiro</code></pre> </li> <li><span>Dies erstellt zwei Dateien:</span> <ul> <li><code>~/.kiro/settings/mcp.json</code> — MCP-Server-Verbindung</li> <li><code>.kiro/steering/lean-ctx.md</code> — Steering-Datei, die Kiro anweist, <code>mcp_lean_ctx_ctx_read</code> statt <code>readFile</code> zu bevorzugen, usw.</li> </ul> </li> <li>Starte Kiro neu, um zu aktivieren.</li> </ol> <p><strong>Wichtig:</strong> Die Steering-Datei (<code>.kiro/steering/lean-ctx.md</code>) ist projektspezifisch. Ohne sie verwendet Kiro standardmäßig seine nativen Tools und ignoriert den MCP-Server für Lese- und Suchvorgänge.</p> <h3 id="editor-verdent">Verdent</h3> <p>Verdent unterstützt MCP-Server über Konfiguration oder CLI.</p> <ol> <li>Öffne die Verdent-Einstellungen oder navigiere zum MCP-Bereich.</li> <li><span>Führe den Init-Befehl aus:</span> <pre><code>lean-ctx init --agent verdent</code></pre> </li> <li><span>Oder erstelle die MCP-Konfiguration manuell:</span> <pre><code>{
   &quot;mcpServers&quot;: {
     &quot;lean-ctx&quot;: {
       &quot;command&quot;: &quot;lean-ctx&quot;
