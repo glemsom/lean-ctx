@@ -273,8 +273,8 @@ export default function (pi: ExtensionAPI) {
 
   pi.registerTool({
     ...baseBashTool,
-    description: "Execute a bash command.",
-    promptSnippet: "Run shell commands.",
+    description: "Execute a bash command",
+    promptSnippet: "Run shell commands",
     promptGuidelines: [],
     async execute(toolCallId, params, signal, onUpdate, ctx) {
       try {
@@ -301,8 +301,8 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "read",
     label: "Read",
-    description: "Read file contents.",
-    promptSnippet: "Read files with automatic compression mode selection.",
+    description: "Read file contents",
+    promptSnippet: "Read files with automatic compression mode selection",
     promptGuidelines: [],
     parameters: readSchema,
     renderCall(args, theme, context) {
@@ -404,7 +404,7 @@ export default function (pi: ExtensionAPI) {
     label: "ls",
     description: "List directory contents",
     promptSnippet: "List directory contents",
-    promptGuidelines: ["Prefer over `bash ls` — respects .gitignore."],
+    promptGuidelines: ["Prefer over `bash ls` — respects .gitignore"],
     parameters: lsSchema,
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       const requestedPath = normalizePathArg(params.path || ".");
@@ -423,7 +423,7 @@ export default function (pi: ExtensionAPI) {
     label: "find",
     description: "Find files by glob pattern",
     promptSnippet: "Find files",
-    promptGuidelines: ["Prefer over `bash find` — respects .gitignore."],
+    promptGuidelines: ["Prefer over `bash find` — respects .gitignore"],
     parameters: findSchema,
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       const requestedPath = normalizePathArg(params.path || ".");
@@ -442,7 +442,7 @@ export default function (pi: ExtensionAPI) {
     label: "grep",
     description: "Search file contents",
     promptSnippet: "Search code",
-    promptGuidelines: ["Prefer over `bash grep` — faster, respects .gitignore."],
+    promptGuidelines: ["Prefer over `bash grep` — faster, respects .gitignore"],
     parameters: grepSchema,
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       const requestedPath = normalizePathArg(params.path || ".");
