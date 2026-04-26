@@ -273,13 +273,9 @@ export default function (pi: ExtensionAPI) {
 
   pi.registerTool({
     ...baseBashTool,
-    description:
-      "Execute a bash command through lean-ctx compression for 60-90% smaller output.",
-    promptSnippet: "Run shell commands through lean-ctx compression.",
-    promptGuidelines: [
-      "Use bash normally — commands are automatically routed through lean-ctx.",
-      "lean-ctx compresses verbose CLI output (git, cargo, npm, docker, kubectl, etc.) automatically.",
-    ],
+    description: "Execute a bash command.",
+    promptSnippet: "Run shell commands.",
+    promptGuidelines: [],
     async execute(toolCallId, params, signal, onUpdate, ctx) {
       try {
         const result = await baseBashTool.execute(toolCallId, params, signal, onUpdate, ctx);
@@ -305,13 +301,9 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "read",
     label: "Read",
-    description:
-      "Read file contents through lean-ctx with automatic mode selection (full/map/signatures) based on file type and size.",
-    promptSnippet: "Read files through lean-ctx compression with smart mode selection.",
-    promptGuidelines: [
-      "Use read normally — lean-ctx automatically selects the optimal compression mode.",
-      "Small files get full reads, large code files get map/signatures mode.",
-    ],
+    description: "Read file contents.",
+    promptSnippet: "Read files with automatic compression mode selection.",
+    promptGuidelines: [],
     parameters: readSchema,
     renderCall(args, theme, context) {
       return nativeReadTool.renderCall
@@ -410,9 +402,9 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "ls",
     label: "ls",
-    description: "List directory contents through lean-ctx compression.",
-    promptSnippet: "List directory contents with token-optimized output.",
-    promptGuidelines: ["Use ls normally — output is automatically compressed by lean-ctx."],
+    description: "List directory contents",
+    promptSnippet: "List directory contents",
+    promptGuidelines: ["Prefer over `bash ls` — respects .gitignore."],
     parameters: lsSchema,
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       const requestedPath = normalizePathArg(params.path || ".");
@@ -429,9 +421,9 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "find",
     label: "find",
-    description: "Find files by glob pattern through lean-ctx compression.",
-    promptSnippet: "Find files with compressed output.",
-    promptGuidelines: ["Use find normally — output respects .gitignore and is compressed by lean-ctx."],
+    description: "Find files by glob pattern",
+    promptSnippet: "Find files",
+    promptGuidelines: ["Prefer over `bash find` — respects .gitignore."],
     parameters: findSchema,
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       const requestedPath = normalizePathArg(params.path || ".");
@@ -448,9 +440,9 @@ export default function (pi: ExtensionAPI) {
   pi.registerTool({
     name: "grep",
     label: "grep",
-    description: "Search file contents through ripgrep + lean-ctx compression.",
-    promptSnippet: "Search code with compressed, grouped results.",
-    promptGuidelines: ["Use grep normally — results are compressed and grouped by lean-ctx."],
+    description: "Search file contents",
+    promptSnippet: "Search code",
+    promptGuidelines: ["Prefer over `bash grep` — faster, respects .gitignore."],
     parameters: grepSchema,
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
       const requestedPath = normalizePathArg(params.path || ".");
