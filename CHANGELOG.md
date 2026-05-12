@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [3.5.20] — 2026-05-12
+
+### Fixed
+
+- **Graph database path resolution** — `CodeGraph::db_path()` and `meta_path()` now correctly respect `LEAN_CTX_DATA_DIR` environment variable, storing graphs in `~/.lean-ctx/graphs/<hash>/` instead of project-local `.lean-ctx/` directory. Adds `CodeGraph::open_existing()` for explicit non-creation semantics.
+- **Graph error handling** — Property graph operations now gracefully handle database path errors and missing databases, returning accurate `exists: false` status instead of panicking.
+
 ## [3.5.19] — 2026-05-12
 
 ### Added

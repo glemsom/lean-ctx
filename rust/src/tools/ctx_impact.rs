@@ -801,7 +801,6 @@ fn handle_build(root: &str, fmt: OutputFormat) -> String {
 
     let mut result = format!(
         "Graph built: {total_nodes} nodes, {total_edges} edges from {} files\n\
-         Stored at: .lean-ctx/graph.db\n\
          Build time: {build_time_ms}ms",
         file_contents.len(),
     );
@@ -838,7 +837,7 @@ fn handle_build(root: &str, fmt: OutputFormat) -> String {
                 "nodes": total_nodes,
                 "edges": total_edges,
                 "build_time_ms": build_time_ms,
-                "db_path": ".lean-ctx/graph.db"
+                "db_path": graph.db_path()
             });
             if let Some(h) = incremental_hint {
                 v.as_object_mut()
@@ -1003,7 +1002,7 @@ fn handle_update(root: &str, fmt: OutputFormat) -> String {
                 "nodes_added": total_nodes,
                 "edges_added": total_edges,
                 "update_time_ms": elapsed_ms,
-                "db_path": ".lean-ctx/graph.db"
+                "db_path": graph.db_path()
             });
             serde_json::to_string_pretty(&v).unwrap_or_else(|_| "{}".to_string())
         }
@@ -1030,7 +1029,7 @@ fn handle_status(root: &str, fmt: OutputFormat) -> String {
                     "project": project_meta(root),
                     "graph": {
                         "exists": false,
-                        "db_path": ".lean-ctx/graph.db",
+                        "db_path": null,
                         "nodes": 0,
                         "edges": 0
                     },
@@ -1077,7 +1076,7 @@ fn handle_status(root: &str, fmt: OutputFormat) -> String {
         }
         OutputFormat::Text => {
             let mut out =
-                format!("Property Graph: {nodes} nodes, {edges} edges\nStored: .lean-ctx/graph.db");
+                format!("Property Graph: {nodes} nodes, {edges} edges");
             if stale {
                 out.push_str("\nWARNING: graph looks stale (git HEAD / dirty mismatch). Run ctx_impact action='build' to refresh.");
             }
@@ -1105,11 +1104,19 @@ fn project_meta(root: &str) -> Value {
 }
 
 fn graph_summary(project_root: &Path) -> Value {
-    let db_path = project_root.join(".lean-ctx").join("graph.db");
+    let db_path = match crate::core::property_graph::CodeGraph::db_path(project_root) {
+        Ok(p) => p,
+        Err(_) => return json!({
+            "exists": false,
+            "db_path": null,
+            "nodes": null,
+            "edges": null
+        }),
+    };
     if !db_path.exists() {
         return json!({
             "exists": false,
-            "db_path": ".lean-ctx/graph.db",
+            "db_path": db_path.display().to_string(),
             "nodes": null,
             "edges": null
         });
@@ -1117,13 +1124,13 @@ fn graph_summary(project_root: &Path) -> Value {
     match crate::core::property_graph::CodeGraph::open(project_root) {
         Ok(g) => json!({
             "exists": true,
-            "db_path": ".lean-ctx/graph.db",
+            "db_path": g.db_path().display().to_string(),
             "nodes": g.node_count().ok(),
             "edges": g.edge_count().ok()
         }),
         Err(_) => json!({
-            "exists": true,
-            "db_path": ".lean-ctx/graph.db",
+            "exists": false,
+            "db_path": db_path.display().to_string(),
             "nodes": null,
             "edges": null
         }),

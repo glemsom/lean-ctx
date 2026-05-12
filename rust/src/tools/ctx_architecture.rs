@@ -1289,25 +1289,33 @@ fn project_meta(root: &str) -> Value {
 }
 
 fn graph_summary(project_root: &Path) -> Value {
-    let db_path = project_root.join(".lean-ctx").join("graph.db");
+    let db_path = match crate::core::property_graph::CodeGraph::db_path(project_root) {
+        Ok(p) => p,
+        Err(_) => return json!({
+            "exists": false,
+            "db_path": null,
+            "nodes": null,
+            "edges": null
+        }),
+    };
     if !db_path.exists() {
         return json!({
             "exists": false,
-            "db_path": ".lean-ctx/graph.db",
+            "db_path": db_path.display().to_string(),
             "nodes": null,
             "edges": null
         });
     }
-    match CodeGraph::open(project_root) {
+    match crate::core::property_graph::CodeGraph::open(project_root) {
         Ok(g) => json!({
             "exists": true,
-            "db_path": ".lean-ctx/graph.db",
+            "db_path": g.db_path().display().to_string(),
             "nodes": g.node_count().ok(),
             "edges": g.edge_count().ok()
         }),
         Err(_) => json!({
-            "exists": true,
-            "db_path": ".lean-ctx/graph.db",
+            "exists": false,
+            "db_path": db_path.display().to_string(),
             "nodes": null,
             "edges": null
         }),

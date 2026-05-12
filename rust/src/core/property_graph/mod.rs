@@ -27,13 +27,39 @@ pub struct CodeGraph {
 }
 
 impl CodeGraph {
+    /// Returns the expected database path for a project, respecting LEAN_CTX_DATA_DIR.
+    pub fn db_path(project_root: &Path) -> Result<PathBuf, String> {
+        let normalized = crate::core::graph_index::normalize_project_root(project_root.to_string_lossy().as_ref());
+        let hash = crate::core::project_hash::hash_project_root(&normalized);
+        Ok(crate::core::data_dir::lean_ctx_data_dir()?.join("graphs").join(&hash).join("graph.db"))
+    }
+
     pub fn open(project_root: &Path) -> anyhow::Result<Self> {
-        let db_dir = project_root.join(".lean-ctx");
+        let normalized = crate::core::graph_index::normalize_project_root(project_root.to_string_lossy().as_ref());
+        let hash = crate::core::project_hash::hash_project_root(&normalized);
+        let db_dir = crate::core::data_dir::lean_ctx_data_dir()?.join("graphs").join(&hash);
         std::fs::create_dir_all(&db_dir)?;
         let db_path = db_dir.join("graph.db");
         let conn = Connection::open(&db_path)?;
         conn.busy_timeout(std::time::Duration::from_secs(5))?;
         schema::initialize(&conn)?;
+        Ok(Self { conn, db_path })
+    }
+
+    /// Opens an existing graph database. Returns error if DB doesn't exist or has no schema.
+    pub fn open_existing(project_root: &Path) -> anyhow::Result<Self> {
+        let db_path = Self::db_path(project_root).map_err(|e| anyhow::anyhow!("{}", e))?;
+        if !db_path.exists() {
+            return Err(anyhow::anyhow!("Graph database does not exist at {}", db_path.display()));
+        }
+        let normalized = crate::core::graph_index::normalize_project_root(project_root.to_string_lossy().as_ref());
+        let hash = crate::core::project_hash::hash_project_root(&normalized);
+        let db_dir = crate::core::data_dir::lean_ctx_data_dir()?.join("graphs").join(&hash);
+        let conn = Connection::open(&db_path)?;
+        conn.busy_timeout(std::time::Duration::from_secs(5))?;
+        // Verify schema exists (check for a table we expect)
+        conn.query_row("SELECT name FROM sqlite_master WHERE type='table' AND name='nodes'", [], |_| Ok(()))
+            .map_err(|_| anyhow::anyhow!("Graph database exists but is not initialized"))?;
         Ok(Self { conn, db_path })
     }
 

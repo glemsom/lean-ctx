@@ -166,27 +166,30 @@ fn build_deps_graph(
 }
 
 fn property_graph_summary(project_root: &Path) -> PropertyGraphSummary {
-    let db_path = project_root.join(".lean-ctx").join("graph.db");
-    let db_path_s = db_path.to_string_lossy().to_string();
-    if !db_path.exists() {
-        return PropertyGraphSummary {
+    match crate::core::property_graph::CodeGraph::db_path(project_root) {
+        Ok(db_path) if !db_path.exists() => PropertyGraphSummary {
             exists: false,
-            db_path: db_path_s,
+            db_path: db_path.to_string_lossy().into_owned(),
             nodes: None,
             edges: None,
-        };
-    }
-
-    match crate::core::property_graph::CodeGraph::open(project_root) {
-        Ok(g) => PropertyGraphSummary {
-            exists: true,
-            db_path: g.db_path().to_string_lossy().to_string(),
-            nodes: g.node_count().ok(),
-            edges: g.edge_count().ok(),
         },
-        Err(_) => PropertyGraphSummary {
-            exists: true,
-            db_path: db_path_s,
+        Ok(db_path) => match crate::core::property_graph::CodeGraph::open(project_root) {
+            Ok(g) => PropertyGraphSummary {
+                exists: true,
+                db_path: g.db_path().to_string_lossy().into_owned(),
+                nodes: g.node_count().ok(),
+                edges: g.edge_count().ok(),
+            },
+            Err(_) => PropertyGraphSummary {
+                exists: false,
+                db_path: db_path.to_string_lossy().into_owned(),
+                nodes: None,
+                edges: None,
+            },
+        },
+        Err(e) => PropertyGraphSummary {
+            exists: false,
+            db_path: format!("error: {}", e),
             nodes: None,
             edges: None,
         },

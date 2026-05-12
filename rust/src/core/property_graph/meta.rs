@@ -37,7 +37,18 @@ impl Default for PropertyGraphMetaV1 {
 }
 
 pub fn meta_path(project_root: &Path) -> PathBuf {
-    project_root.join(".lean-ctx").join("graph.meta.json")
+    let normalized = crate::core::graph_index::normalize_project_root(project_root.to_string_lossy().as_ref());
+    let hash = crate::core::project_hash::hash_project_root(&normalized);
+    crate::core::data_dir::lean_ctx_data_dir()
+        .unwrap_or_else(|_| {
+            // Fallback: use a canonical ~/.lean-ctx if data dir resolution fails
+            dirs::home_dir()
+                .unwrap_or_else(|| PathBuf::from("."))
+                .join(".lean-ctx")
+        })
+        .join("graphs")
+        .join(hash)
+        .join("graph.meta.json")
 }
 
 pub fn load_meta(project_root: &Path) -> Option<PropertyGraphMetaV1> {
